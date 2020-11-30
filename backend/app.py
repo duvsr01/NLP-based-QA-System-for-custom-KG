@@ -22,17 +22,20 @@ def home():
         return jsonify({'data': data})
 
 # post request accepts a query argument value
-#return status string
-@app.route('/question')
+# return status string
+@app.route('/question', methods=['POST'])
 def process():
     error = ''
     try:
-        question = request.args.get('value')
-        return "Call Successsful!!"
+        data = request.json
+        question = data['question']
         print(question)
+        return "Call Successsful!!"
+
     except Exception as e:
         print(e)
         return "Error occurred!!" + e
+
 
 # driver function
 if __name__ == '__main__':
