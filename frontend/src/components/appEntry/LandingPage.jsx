@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InputGroup, FormControl,Button, Col, Row } from "react-bootstrap";
+import { InputGroup, FormControl,Button, Col, Row,Card } from "react-bootstrap";
 import axios from "axios";
 
 class LandingPage extends Component {
@@ -7,6 +7,7 @@ class LandingPage extends Component {
     super(props);
     this.state = {
       question: "",
+      answer:""
     };
   }
 
@@ -29,6 +30,9 @@ class LandingPage extends Component {
     .then(response => {
       console.log("Status Code : ", response.status);
       console.log("Answer: "+response.data);
+      this.setState({
+        answer:response.data
+      })
       })
     .catch(error => {
       console.log("Error: "+error);
@@ -37,6 +41,20 @@ class LandingPage extends Component {
   };
 
   render() {
+    let content;
+    if(this.state.answer){
+     content =
+      <div>
+      <Card bg="white" style={{ width: "100%", margin: "1%", height: "500px"}}>
+      <Card.Body>
+      <Card.Title>{this.state.answer}</Card.Title>  
+      </Card.Body>
+      </Card>
+      </div>
+    }
+    
+    
+  
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper ">
         <div className="container border rounded p-5">
@@ -66,6 +84,7 @@ class LandingPage extends Component {
               <span className="d-block p-2 bg-primary text-white">
                 Search Results:
               </span>
+              {content}
             </div>
           </div>
         </div>
