@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InputGroup, FormControl,Button, Col, Row,Card } from "react-bootstrap";
+import { InputGroup, FormControl,Button, Col, Row,Card,Container } from "react-bootstrap";
 import axios from "axios";
 
 class LandingPage extends Component {
@@ -26,7 +26,7 @@ class LandingPage extends Component {
     console.log("data is" + JSON.stringify(data));
 
     axios
-    .post("http://127.0.0.1:5000/question", data)
+    .post("http://127.0.0.1:5001/question", data)
     .then(response => {
       console.log("Status Code : ", response.status);
       console.log("Answer: "+response.data);
@@ -56,10 +56,14 @@ class LandingPage extends Component {
 
 
     return (
+      <div className="mx-auto" style={{ width: "900px"}} >  
+      <div className=" container">
+        <div className="row">
+        </div>
       <div style={{ height: "75vh" }} className="container valign-wrapper ">
         <div className="container border rounded p-5">
           <div>
-            <h3 className="text-left text-black font-italic font-family-sans-serif">
+            <h3 className="text-left text-black  font-family-sans-serif background indigo">
               {" "}
               Welcome to our Question Answering System
             </h3>
@@ -89,6 +93,8 @@ class LandingPage extends Component {
           </div>
         </div>
       </div>
+      </div>
+      </div> 
     );
   }
 }

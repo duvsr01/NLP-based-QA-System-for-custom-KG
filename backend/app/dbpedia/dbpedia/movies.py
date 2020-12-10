@@ -84,9 +84,9 @@ class MovieDurationQuestion(QuestionTemplate):
     """
 
     regex = ((Lemmas("how long be") + Movie()) |
-            (Lemmas("what be") + Pos("DT") + Lemma("duration") +
-             Pos("IN") + Movie())) + \
-            Question(Pos("."))
+             (Lemmas("what be") + Pos("DT") + Lemma("duration") +
+              Pos("IN") + Movie())) + \
+        Question(Pos("."))
 
     def interpret(self, match):
         duration = DurationOf(match.movie)
@@ -124,15 +124,13 @@ class MovieReleaseDateQuestion(QuestionTemplate):
     """
 
     regex = ((Lemmas("when be") + Movie() + Lemma("release")) |
-            (Lemma("release") + Question(Lemma("date")) +
-             Pos("IN") + Movie())) + \
-            Question(Pos("."))
+             (Lemma("release") + Question(Lemma("date")) +
+              Pos("IN") + Movie())) + \
+        Question(Pos("."))
 
     def interpret(self, match):
         release_date = ReleaseDateOf(match.movie)
         return release_date, "literal"
-
-
 
 
 class DirectorOfQuestion(QuestionTemplate):
@@ -142,15 +140,14 @@ class DirectorOfQuestion(QuestionTemplate):
     """
 
     regex = ((Lemmas("who be") + Pos("DT") + Lemma("director") +
-             Pos("IN") + Movie()) |
+              Pos("IN") + Movie()) |
              (Lemma("who") + Lemma("direct") + Movie())) + \
-            Question(Pos("."))
+        Question(Pos("."))
 
     def interpret(self, match):
         director = IsPerson() + DirectorOf(match.movie)
         director_name = NameOf(director)
         return director_name, "literal"
-
 
 
 class ActorsOfQuestion(QuestionTemplate):
@@ -177,10 +174,10 @@ class PlotOfQuestion(QuestionTemplate):
         "plot of Titanic"
     """
 
-    regex = ((Lemmas("what be") + Movie() + Lemma("about")) | \
+    regex = ((Lemmas("what be") + Movie() + Lemma("about")) |
              (Question(Lemmas("what be the")) + Lemma("plot") +
               Pos("IN") + Movie())) + \
-            Question(Pos("."))
+        Question(Pos("."))
 
     def interpret(self, match):
         definition = DefinitionOf(match.movie)

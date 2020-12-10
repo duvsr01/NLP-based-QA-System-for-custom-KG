@@ -13,7 +13,7 @@ Basic questions for DBpedia.
 
 from refo import Group, Plus, Question
 from quepy.parsing import Lemma, Pos, QuestionTemplate, Token, Particle, \
-                          Lemmas
+    Lemmas
 from quepy.dsl import HasKeyword, IsRelatedTo, HasType
 from .dsl import DefinitionOf, LabelOf, IsPlace, \
     UTCof, LocationOf
@@ -25,7 +25,7 @@ LISTOPEN = Lemma("list") | Lemma("name")
 
 class Thing(Particle):
     regex = Question(Pos("JJ")) + (Pos("NN") | Pos("NNP") | Pos("NNS")) |\
-            Pos("VBN")
+        Pos("VBN")
 
     def interpret(self, match):
         return HasKeyword(match.words.tokens)
@@ -74,10 +74,10 @@ class WhatTimeIs(QuestionTemplate):
     nouns = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
     place = Group(nouns, "place")
     openings = (Lemma("what") +
-        ((Token("is") + Token("the") + Question(Lemma("current")) +
-        Question(Lemma("local")) + Lemma("time")) |
-        (Lemma("time") + Token("is") + Token("it")))) | \
-               Lemma("time")
+                ((Token("is") + Token("the") + Question(Lemma("current")) +
+                  Question(Lemma("local")) + Lemma("time")) |
+                 (Lemma("time") + Token("is") + Token("it")))) | \
+        Lemma("time")
     regex = openings + Pos("IN") + place + Question(Pos("."))
 
     def interpret(self, match):

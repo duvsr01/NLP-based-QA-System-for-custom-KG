@@ -85,7 +85,7 @@ class AlbumsOfQuestion(QuestionTemplate):
         "Albums by Metallica"
     """
 
-    regex = (Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) + \
+    regex = (Question(Lemma("list")) + (Lemma("album") | Lemma("albums")) +
              Pos("IN") + Band()) | \
             (Lemmas("what album do") + Band() +
              (Lemma("record") | Lemma("make")) + Question(Pos("."))) | \

@@ -3,7 +3,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
-from backend.app.dbpedia.main import quepy_main
+from dbpedia.main import quepy_main
 
 
 # creating a Flask app
@@ -31,7 +31,9 @@ def process():
         data = request.json
         question = data['question']
         print(question)
+        #str_return = 'answer'
         str_return = quepy_main(question)
+        # quepy_main(question)
         return str_return
 
     except Exception as e:
@@ -41,7 +43,7 @@ def process():
 
 def run_app():
     app.run(debug=True)
-    app.run(host='0.0.0.0', port = 5001)
+    app.run(host='0.0.0.0', port=5001)
 
 
 # driver function

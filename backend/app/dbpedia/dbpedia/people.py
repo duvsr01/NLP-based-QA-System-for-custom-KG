@@ -65,15 +65,16 @@ class WhereIsFromQuestion(QuestionTemplate):
 
         return label, "enum"
 
+
 class DaughterOfQuestion(QuestionTemplate):
     """
     Ex: "Who is the daughter of Obama?"
 
     """
 
-    regex = ((Lemmas("who be") + Pos("DT")) | (Lemmas("who") + Question(Lemma("be") + Pos("DT")) ))+ \
+    regex = ((Lemmas("who be") + Pos("DT")) | (Lemmas("who") + Question(Lemma("be") + Pos("DT")))) + \
             (Lemma("daughter") | Lemma("child") | Lemma("children") | Lemma("son")) + \
-            Pos("IN") + Person() + Question(Pos("."))
+        Pos("IN") + Person() + Question(Pos("."))
 
     def interpret(self, match):
         daughter = IsPerson() + DaughterOf(match.person)
