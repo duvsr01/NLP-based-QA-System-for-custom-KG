@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { InputGroup, FormControl,Button, Col, Row } from "react-bootstrap";
+import { InputGroup, FormControl,Button, Col, Row,Card } from "react-bootstrap";
 import axios from "axios";
+import {Autocomplete} from "./Autocomplete";
 
 class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       question: "",
+      answer:""
     };
   }
 
@@ -29,6 +31,9 @@ class LandingPage extends Component {
     .then(response => {
       console.log("Status Code : ", response.status);
       console.log("Answer: "+response.data);
+      this.setState({
+        answer:response.data
+      })
       })
     .catch(error => {
       console.log("Error: "+error);
@@ -37,6 +42,18 @@ class LandingPage extends Component {
   };
 
   render() {
+    let content;
+    if(this.state.answer){
+     content =
+      <div>
+      <Card bg="white" style={{ width: "100%", margin: "1%", height: "500px"}}>
+      <Card.Body>
+      <Card.Title>{this.state.answer}</Card.Title>  
+      </Card.Body>
+      </Card>
+      </div>
+    }
+  
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper ">
         <div className="container border rounded p-5">
@@ -51,6 +68,7 @@ class LandingPage extends Component {
             <InputGroup className="mb-3 col-sm-10">
               <FormControl
                 placeholder="Enter Search Query!"
+                ref={InputGroup => this.search = InputGroup}
                 value={this.state.question}
                 onChange={this.handleSearchChange}
               />
@@ -59,13 +77,18 @@ class LandingPage extends Component {
               variant="primary"
               value="Submit"
               onClick={this.handleSubmit}
-              >Search</Button>
-            </InputGroup>
+              >Search</Button><br/>
+            <Autocomplete
+                suggestions={['White', 'Black', 'Green', 'Blue', 'Yellow', 'Red']}
+                />
+
+           </InputGroup>
             <br />
             <div>
               <span className="d-block p-2 bg-primary text-white">
                 Search Results:
               </span>
+              {content}
             </div>
           </div>
         </div>
