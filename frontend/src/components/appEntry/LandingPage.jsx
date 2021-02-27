@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl,Button, Col, Row,Card } from "react-bootstrap";
 import axios from "axios";
-import {Autocomplete} from "./Autocomplete";
+import AutoCompleteText from "./AutoCompleteText";
 
 class LandingPage extends Component {
   constructor(props) {
@@ -78,12 +78,14 @@ class LandingPage extends Component {
               value="Submit"
               onClick={this.handleSubmit}
               >Search</Button><br/>
-            <Autocomplete
-                suggestions={['White', 'Black', 'Green', 'Blue', 'Yellow', 'Red']}
-                />
+           </InputGroup>  <br />
+          
 
-           </InputGroup>
-            <br />
+           
+             <AutoCompleteText /> <br/>
+
+          
+
             <div>
               <span className="d-block p-2 bg-primary text-white">
                 Search Results:
