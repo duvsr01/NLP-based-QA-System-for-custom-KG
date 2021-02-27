@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl,Button, Col, Row,Card } from "react-bootstrap";
 import axios from "axios";
+import {Autocomplete} from "./Autocomplete";
 
 class LandingPage extends Component {
   constructor(props) {
@@ -52,8 +53,6 @@ class LandingPage extends Component {
       </Card>
       </div>
     }
-    
-    
   
     return (
       <div style={{ height: "75vh" }} className="container valign-wrapper ">
@@ -69,6 +68,7 @@ class LandingPage extends Component {
             <InputGroup className="mb-3 col-sm-10">
               <FormControl
                 placeholder="Enter Search Query!"
+                ref={InputGroup => this.search = InputGroup}
                 value={this.state.question}
                 onChange={this.handleSearchChange}
               />
@@ -77,8 +77,12 @@ class LandingPage extends Component {
               variant="primary"
               value="Submit"
               onClick={this.handleSubmit}
-              >Search</Button>
-            </InputGroup>
+              >Search</Button><br/>
+            <Autocomplete
+                suggestions={['White', 'Black', 'Green', 'Blue', 'Yellow', 'Red']}
+                />
+
+           </InputGroup>
             <br />
             <div>
               <span className="d-block p-2 bg-primary text-white">
