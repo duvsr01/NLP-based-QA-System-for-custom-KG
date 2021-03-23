@@ -11,13 +11,14 @@ public class Test {
             .createDefaultModel();
             //.setNsPrefix("", AMA_BASE);
 
-    private static Property FIRST_NAME_PROP = MODEL.createProperty(AMA_BASE + "#firstName");
-    private static Property LAST_NAME_PROP = MODEL.createProperty(AMA_BASE + "#lastName");
-    private static Property FULL_NAME_PROP = MODEL.createProperty(AMA_BASE + "#fullName");
-    private static Property NAME_PROP = MODEL.createProperty(AMA_BASE + "#name");
-    private static Property TYPE_PROP = MODEL.createProperty(AMA_BASE + "#type");
-    private static Property DEPARTMENT_NAME_PROP = MODEL.createProperty(AMA_BASE + "#department");
-    private static Property SJSU_ID_PROP = MODEL.createProperty(AMA_BASE + "#sjsuId");
+    public static Property FIRST_NAME_PROP = MODEL.createProperty(AMA_BASE + "#firstName");
+    public static Property LAST_NAME_PROP = MODEL.createProperty(AMA_BASE + "#lastName");
+    public static Property FULL_NAME_PROP = MODEL.createProperty(AMA_BASE + "#fullName");
+    public static Property NAME_PROP = MODEL.createProperty(AMA_BASE + "#name");
+    public static Property TYPE_PROP = MODEL.createProperty(AMA_BASE + "#type");
+    public static Property DEPARTMENT_NAME_PROP = MODEL.createProperty(AMA_BASE + "#department");
+    public static Property NUMBER_PROP = MODEL.createProperty(AMA_BASE + "#number");
+    public static Property SJSU_ID_PROP = MODEL.createProperty(AMA_BASE + "#sjsuId");
 
     public static void printRDFObject() {
         StmtIterator iter = MODEL.listStatements();
@@ -32,7 +33,7 @@ public class Test {
             System.out.print("<" + subject.toString() + ">");
             System.out.print(" <" + predicate.toString() + ">");
             if (object instanceof Resource) {
-                System.out.print("<" + object.toString() + ">");
+                System.out.print(" <" + object.toString() + ">");
             } else {
                 // object is a literal
                 System.out.print(" \"" + object.toString() + "\"");
@@ -41,6 +42,20 @@ public class Test {
             System.out.println(" .");
         }
     }
+
+    public static  Map<String, Property> departmentMap  = new HashMap<String, Property>() {{
+        put("name", NAME_PROP);
+        put("sjsuId", SJSU_ID_PROP);
+        put("type", TYPE_PROP);
+    }};
+
+    public static  Map<String, Property> courseMap  = new HashMap<String, Property>() {{
+        put("name", NAME_PROP);
+        put("sjsuId", SJSU_ID_PROP);
+        put("number", NUMBER_PROP);
+        put("department", DEPARTMENT_NAME_PROP);
+        put("type", TYPE_PROP);
+    }};
 
     public static  Map<String, Property> personelMap  = new HashMap<String, Property>() {{
         put("firstName", FIRST_NAME_PROP);
