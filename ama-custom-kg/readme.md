@@ -52,9 +52,9 @@ So, your final GET call will be  -
  
 # Support for aliases
 1. Custom KG now provides support for aliases. For example, if "email" has aliases "email", "email id" and "email address", then email of Harkey can be found by the three questions -
-"What is email of Harkey"
-"What is email id of Harkey"
-"What is email address of Harkey"
+"What is email of Harkey", 
+"What is email id of Harkey" and
+"What is email address of Harkey".
 
 2. We use the below three SPARQL queries to answer the questions - 
 ```javascript
