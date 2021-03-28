@@ -16,7 +16,7 @@ public class JSONReader {
 
         //System.out.println(employee.keySet());
         for (Object key: employee.keySet()) {
-            System.out.println("key: " + key + " val: " + employee.get(key));
+            //System.out.println("key: " + key + " val: " + employee.get(key));
             if (entityMap.containsKey(key)) {
                 danHarkey.addProperty(entityMap.get(key), employee.get(key).toString());
             } else {
@@ -25,7 +25,7 @@ public class JSONReader {
 
                 if (iter.hasNext()) {
                     Statement resStemt = iter.nextStatement();
-                    System.out.println("found: " + resStemt.getSubject());
+                    //System.out.println("found: " + resStemt.getSubject());
 
                     if (entityMap.containsKey(key_first_part)) {
                         danHarkey.addProperty(entityMap.get(key_first_part), resStemt.getSubject());
@@ -34,7 +34,7 @@ public class JSONReader {
             }
         }
 
-        Test.printRDFObject();
+
     }
 
     public static void readJSONFile() {
@@ -55,7 +55,6 @@ public class JSONReader {
                 Map<String, Property> entityMap = null;
                 switch (entityType) {
                     case "department":
-                        System.out.println("department");
                         entityMap = Test.departmentMap;
                         break;
                     case "personel":
@@ -80,7 +79,24 @@ public class JSONReader {
         }
     }
 
+    public static void generateAliases() {
+        for (Object key: Test.aliasMap.keySet()) {
+            String resourceProp = Test.aliasMap.get(key).toString();
+            if (Test.aliases.containsKey(key)) {
+                List<String> aliasList = Test.aliases.get(key);
+                Resource aliasResource
+                        = Test.MODEL.createResource(resourceProp);
+
+                for (String alias: aliasList) {
+                    aliasResource.addProperty(Test.HAS_ALIAS, alias);
+                }
+            }
+        }
+    }
+
     public static void main(String []args) {
         readJSONFile();
+        generateAliases();
+        Test.printRDFObject();
     }
 }

@@ -1,7 +1,6 @@
 import org.apache.jena.rdf.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Test {
     public static String AMA_BASE = "http://www.w3.org/2001/ama/sjsu";
@@ -19,6 +18,11 @@ public class Test {
     public static Property DEPARTMENT_NAME_PROP = MODEL.createProperty(AMA_BASE + "#department");
     public static Property NUMBER_PROP = MODEL.createProperty(AMA_BASE + "#number");
     public static Property SJSU_ID_PROP = MODEL.createProperty(AMA_BASE + "#sjsuId");
+    public static Property EMAIL_PROP = MODEL.createProperty(AMA_BASE + "#email");
+    public static Property PROPERTY_PROP = MODEL.createProperty(AMA_BASE + "#property");
+    public static Property HAS_ALIAS = MODEL.createProperty(AMA_BASE + "#hasAlias");
+
+
 
     public static void printRDFObject() {
         StmtIterator iter = MODEL.listStatements();
@@ -43,6 +47,15 @@ public class Test {
         }
     }
 
+    public static  Map<String, List<String>> aliases  = new HashMap<String, List<String>>() {{
+        put("email", new ArrayList<>(
+                Arrays.asList("email", "email id", "email address")));
+    }};
+
+    public static  Map<String, Property> aliasMap  = new HashMap<String, Property>() {{
+        put("email", EMAIL_PROP);
+    }};
+
     public static  Map<String, Property> departmentMap  = new HashMap<String, Property>() {{
         put("name", NAME_PROP);
         put("sjsuId", SJSU_ID_PROP);
@@ -64,6 +77,7 @@ public class Test {
         put("type", TYPE_PROP);
         put("department", DEPARTMENT_NAME_PROP);
         put("sjsuId", SJSU_ID_PROP);
+        put("email", EMAIL_PROP);
     }};
 
     public static void main(String[] args) {
