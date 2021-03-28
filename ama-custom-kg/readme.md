@@ -42,9 +42,9 @@ LIMIT 25
 ```
 then if you percent encode it (can be done via this web tool https://www.url-encode-decode.com/), it will become 
 
- ```javascript
+ `
 SELECT+%3Fname+%0D%0AWHERE+%7B%0D%0A++%3Fsubject+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2Fama%2Fsjsu%23type%3E+%22course%22+.%0D%0A++%3Fsubject+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2Fama%2Fsjsu%23name%3E+%3Fname%0D%0A%7D
- ```
+ `
 
 So, your final GET call will be  -
  `http://localhost:3030/ama/sparql?query=SELECT+%3Fname+%0D%0AWHERE+%7B%0D%0A++%3Fsubject+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2Fama%2Fsjsu%23type%3E+%22course%22+.%0D%0A++%3Fsubject+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2Fama%2Fsjsu%23name%3E+%3Fname%0D%0A%7D`
