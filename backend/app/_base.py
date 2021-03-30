@@ -3,17 +3,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from dotenv import load_dotenv
-import sys
 
-#sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-#import pdb;
-#pdb.set_trace()
-#sys.path.append('/Users/jainsh/Documents/cmpe295/NLP-based-QA-System-for-custom-KG-demo')
-import sys
-from os import path
-sys.path.append(path.dirname(__file__))
-#print(sys.path)
-#print(sys.path[1])
 from backend.app.dbpedia.main import quepy_main
 
 # creating a Flask app
