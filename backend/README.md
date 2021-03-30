@@ -4,7 +4,8 @@ From the root folder, execute the following commands.
 
 # To setup basic python environment
 
-python3 -m venv env_vir
+python3 -m venv env_vir 
+
 source env_vir/bin/activate
 
 # Install all dependencies
@@ -15,14 +16,14 @@ pip install -r requirements.txt
 
 python3 backend/run.py
 
+The flask server should be up and running and API requests can now be made.
 
-
-
-
-
-
-Alternatives - 
-
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
 
 If the backend dependencies are not set up properly, then as an alternative, run following commands at the root of backend folder:
 
