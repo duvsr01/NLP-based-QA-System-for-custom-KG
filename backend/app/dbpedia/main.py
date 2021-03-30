@@ -18,9 +18,9 @@ import random
 import math
 import datetime
 
-import quepy
+from backend.app import quepy
 from SPARQLWrapper import SPARQLWrapper, JSON
-
+from backend.app.quepy.quepyapp import QuepyApp
 sparql = SPARQLWrapper("http://dbpedia.org/sparql")
 dbpedia = quepy.install("backend.app.dbpedia.dbpedia")
 
@@ -31,7 +31,6 @@ def print_define(results, target, metadata=None):
     for result in results["results"]["bindings"]:
         if result[target]["xml:lang"] == "en":
             return result[target]["value"]
-
 
 
 def print_enum(results, target, metadata=None):
@@ -86,10 +85,10 @@ def print_time(results, target, metadata=None):
                                              "your location"])
 
             str_return = "Between %s %s %s, depending on %s" % \
-                  (from_time.strftime("%H:%M"),
-                   connector,
-                   to_time.strftime("%H:%M on %A"),
-                   location_string)
+                (from_time.strftime("%H:%M"),
+                 connector,
+                 to_time.strftime("%H:%M on %A"),
+                 location_string)
             return str_return
 
         else:
@@ -100,6 +99,7 @@ def print_time(results, target, metadata=None):
 
             str_return = the_time.strftime("%H:%M on %A")
             return str_return
+
 
 def print_age(results, target, metadata=None):
     birth_date = results["results"]["bindings"][0][target]["value"]
@@ -113,6 +113,7 @@ def print_age(results, target, metadata=None):
     age = now - birth_date
     str_return = "{} years old".format((age/365))
     return str_return
+
 
 def birth_date(results, target, metadata=None):
     birth_date = results["results"]["bindings"][0][target]["value"]
@@ -186,7 +187,7 @@ def quepy_main(question_nlp):
         "age": print_age,
         "dob": birth_date,
     }
-
+    print(questions)
     for question in questions:
         print(question)
         print("-" * len(question))
@@ -207,7 +208,6 @@ def quepy_main(question_nlp):
 
         print("query type is %s" % query_type)
 
-
         if target.startswith("?"):
             target = target[1:]
         if query:
@@ -221,3 +221,7 @@ def quepy_main(question_nlp):
 
         return print_handlers[query_type](results, target, metadata)
 
+
+
+if __name__ == '__main__':
+    quepy_main("What time is it in India?")

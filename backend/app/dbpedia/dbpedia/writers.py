@@ -13,8 +13,8 @@ Writers related regex.
 
 
 from refo import Plus, Question
-from quepy.dsl import HasKeyword
-from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
+from backend.app.quepy.dsl import HasKeyword
+from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from .dsl import IsBook, HasAuthor, AuthorOf, IsPerson, NameOf
 
 
