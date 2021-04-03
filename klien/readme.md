@@ -5,3 +5,5 @@
 `{"data": "What is email of Dan Harkey?",
 "langCode": "en"}`
 4. Answer would be in `results`
+5. Please see below screenshow from Postman for reference -
+![Image of Yaktocat](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/blob/main/klien/images/end-to-end-postman.png)
