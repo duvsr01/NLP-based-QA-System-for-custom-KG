@@ -7,8 +7,7 @@ import re
 from klein import Klein
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-nlp = spacy.load("en_core_web_sm")
-sp = spacy.load('en_core_web_sm')
+nlp = spacy.load("en_core_web_trf")
 
 class ItemStore(object):
     app = Klein()
@@ -60,8 +59,6 @@ class ItemStore(object):
         #
         # print("lemmatized text")
         # print(text)
-
-        entitySet = set()
 
         doc = nlp(json.dumps(text))
 
