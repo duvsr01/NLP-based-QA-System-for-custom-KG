@@ -73,7 +73,7 @@ public class Test {
     public static  Map<String, Property> personelMap  = new HashMap<String, Property>() {{
         put("firstName", FIRST_NAME_PROP);
         put("lastName", LAST_NAME_PROP);
-        put("fullName", FULL_NAME_PROP);
+        put("name", NAME_PROP);
         put("type", TYPE_PROP);
         put("department", DEPARTMENT_NAME_PROP);
         put("sjsuId", SJSU_ID_PROP);

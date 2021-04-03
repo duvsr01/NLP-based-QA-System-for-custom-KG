@@ -1,0 +1,19 @@
+{
+  "personel": [
+    {"sjsuId": "p1", "firstName": "Dan", "lastName": "Harkey", "name":  "Dan Harkey",
+      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1"},
+    {"sjsuId": "p2", "firstName": "Gopinath", "lastName": "Vinodh", "name":  "Vinodh Gopinath",
+      "email": "vinodh.gopinath@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1"},
+    {"sjsuId": "p3", "firstName": "Cristina", "lastName": "Velarde", "name":  "Cristina Velarde",
+      "email": "cristina.velarde@sjsu.edu", "type": "Evaluator", "department_sjsuId": "d2"}],
+
+  "department": [
+    {"sjsuId": "d1", "name": "CMPE", "type": "Department"},
+    {"sjsuId": "d2", "name": "CS", "type": "Department"},
+    {"sjsuId": "d3", "name": "GAPE", "type": "Department"}],
+
+  "course": [
+    {"sjsuId": "c1", "number": "198", "name": "Introduction to Programming", "department_sjsuId": "d2", "type": "course"},
+    {"sjsuId": "c2", "number": "202","name": "Software Systems Engineering", "department_sjsuId": "d1", "type": "course"}
+  ]
+}
