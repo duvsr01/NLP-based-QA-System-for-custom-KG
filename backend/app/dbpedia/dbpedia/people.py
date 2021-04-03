@@ -12,8 +12,8 @@ People related regex
 """
 
 from refo import Plus, Question
-from quepy.dsl import HasKeyword
-from quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
+from backend.app.quepy.dsl import HasKeyword
+from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from .dsl import IsPerson, LabelOf, DefinitionOf, BirthDateOf, BirthPlaceOf, DaughterOf, NameOf
 
 
@@ -65,15 +65,16 @@ class WhereIsFromQuestion(QuestionTemplate):
 
         return label, "enum"
 
+
 class DaughterOfQuestion(QuestionTemplate):
     """
     Ex: "Who is the daughter of Obama?"
 
     """
 
-    regex = ((Lemmas("who be") + Pos("DT")) | (Lemmas("who") + Question(Lemma("be") + Pos("DT")) ))+ \
+    regex = ((Lemmas("who be") + Pos("DT")) | (Lemmas("who") + Question(Lemma("be") + Pos("DT")))) + \
             (Lemma("daughter") | Lemma("child") | Lemma("children") | Lemma("son")) + \
-            Pos("IN") + Person() + Question(Pos("."))
+        Pos("IN") + Person() + Question(Pos("."))
 
     def interpret(self, match):
         daughter = IsPerson() + DaughterOf(match.person)

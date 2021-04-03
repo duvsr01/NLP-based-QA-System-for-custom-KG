@@ -50,3 +50,36 @@ So, your final GET call will be  -
  `http://localhost:3030/ama/sparql?query=SELECT+%3Fname+%0D%0AWHERE+%7B%0D%0A++%3Fsubject+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2Fama%2Fsjsu%23type%3E+%22course%22+.%0D%0A++%3Fsubject+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2Fama%2Fsjsu%23name%3E+%3Fname%0D%0A%7D`
  
  
+# Support for aliases
+1. Custom KG now provides support for aliases. For example, if "email" has aliases "email", "email id" and "email address", then email of Harkey can be found by the three questions -
+"What is email of Harkey", 
+"What is email id of Harkey" and
+"What is email address of Harkey".
+
+2. We use the below three SPARQL queries to answer the questions - 
+```javascript
+SELECT ?value 
+WHERE {
+  ?a <http://www.w3.org/2001/ama/sjsu#hasAlias> "email" .
+  ?someone <http://www.w3.org/2001/ama/sjsu#lastName> "Harkey" .
+  ?someone ?a ?value
+}
+```
+
+```javascript
+SELECT ?value 
+WHERE {
+  ?a <http://www.w3.org/2001/ama/sjsu#hasAlias> "email id" .
+  ?someone <http://www.w3.org/2001/ama/sjsu#lastName> "Harkey" .
+  ?someone ?a ?value
+}
+```
+
+```javascript
+SELECT ?value 
+WHERE {
+  ?a <http://www.w3.org/2001/ama/sjsu#hasAlias> "email address" .
+  ?someone <http://www.w3.org/2001/ama/sjsu#lastName> "Harkey" .
+  ?someone ?a ?value
+}
+```

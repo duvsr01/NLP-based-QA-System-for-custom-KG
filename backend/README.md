@@ -1,23 +1,30 @@
 # Python Backend (Using Flask)
 
-# To run backend:
-
-Go inside the backend folder and run following commands: First set python version as 3
+From the root folder, execute the following commands.
 
 # To setup basic python environment
 
-pip install virtualenv
-virtual env
-source env/bin/activate
+python3 -m venv env_vir 
+
+source env_vir/bin/activate
 
 # Install all dependencies
 
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 
 # To run flask server, run following commands:
 
-pip install
-python app.py
+python3 backend/run.py
+
+The flask server should be up and running and API requests can now be made.
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
 If the backend dependencies are not set up properly, then as an alternative, run following commands at the root of backend folder:
 
 ## Flask is used for writing REST API's in python just like express and Node in JS
