@@ -114,7 +114,7 @@ class ItemStore(object):
         response = requests.post(url, data=data)
         print(response.json())
 
-        return json.dumps(data)
+        return json.dumps(response.json())
 
     def getQueryResults(self, entitySet, langCode):
         data = {'entities': []}
