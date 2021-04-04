@@ -2,6 +2,7 @@ import json
 import spacy
 import requests
 from urllib.parse import quote
+from spacy import displacy
 
 import re
 from klein import Klein
@@ -66,7 +67,7 @@ class ItemStore(object):
             print(token, token.pos_)
 
         print("Nouns:", [token.text for token in doc if token.pos_ == "NOUN"])
-        pos_nouns = [token.text for token in doc if token.pos_ == "NOUN"]
+        pos_nouns = [token.text for token in doc if token.pos_ == "NOUN" and len(token) >= 2]
 
         entities = doc.ents
 
@@ -84,7 +85,17 @@ class ItemStore(object):
         print("entitySet")
         print(entitySet)
 
+        print("chunks")
+        chunks = set()
+        for chunk in doc.noun_chunks:
+            print(chunk.text, chunk.label_, chunk.root.text)
+
         if (len(entitySet) == 1) and (len(pos_nouns) == 1):
+            return self.one_entity_one_predicate(entitySet, pos_nouns, langCode)
+        elif len(entitySet) == 1 and len(pos_nouns) != 1:
+            print("pos_nouns", pos_nouns)
+
+
             return self.one_entity_one_predicate(entitySet, pos_nouns, langCode)
         else:
             return self.getQueryResults(entitySet, langCode)
@@ -114,7 +125,7 @@ class ItemStore(object):
         return json.dumps(response.json())
 
     def getQueryResults(self, entitySet, langCode):
-        data = {'entities': []}
+        data = {}
 
         # for entity in entitySet:
         #     # result_entity = dict()
