@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InputGroup, FormControl,Button, Col, Row } from "react-bootstrap";
+import { InputGroup, FormControl,Button, Col, Row,Card,Container } from "react-bootstrap";
 import axios from "axios";
 
 class LandingPage extends Component {
@@ -7,6 +7,7 @@ class LandingPage extends Component {
     super(props);
     this.state = {
       question: "",
+      answer:""
     };
   }
 
@@ -23,25 +24,61 @@ class LandingPage extends Component {
       question: this.state.question
     };
     console.log("data is" + JSON.stringify(data));
-    
+
     axios
-    .post("http://127.0.0.1:5000/search", data)
+    .post("http://127.0.0.1:5000/question", data) 
     .then(response => {
       console.log("Status Code : ", response.status);
-      console.log("Answer: "+response.data.answer);
+      console.log("Answer: "+response.data);
+      this.setState({
+        answer:response.data
+      })
       })
     .catch(error => {
       console.log("Error: "+error);
     });
-   
+
   };
 
+  //klien server version
+
+    // {headers:{"Access-Control-Allow-Origin":"http://localhost:3000"}}
+    //   axios
+    //   .post("http://localhost:8082/ok", data) 
+    //   .then(response => {
+    //     console.log("Status Code : ", response.status);
+    //     console.log("Answer: "+response.data);
+    //     // this.setState({
+    //     //   answer:response.data
+    //     // })
+    //     })
+    //   .catch(error => {
+    //     console.log("Error: "+error);
+    //   });
+
+    // };
+
   render() {
+    let content;
+    if(this.state.answer){
+     content =
+      <div>
+      <Card bg="white" style={{ width: "100%", margin: "1%", height: "500px"}}>
+      <Card.Body>
+      <Card.Title>{this.state.answer}</Card.Title>
+      </Card.Body>
+      </Card>
+      </div>
+    }
     return (
+      <div className="mx-auto" style={{ width: "900px"}} >  
+      <div className=" container">
+        <div className="row">
+        </div>
       <div style={{ height: "75vh" }} className="container valign-wrapper ">
         <div className="container border rounded p-5">
           <div>
-            <h3 className="text-left text-black font-italic font-family-sans-serif">
+            <h3 className="text-left text-black  font-family-sans-serif background indigo">
               {" "}
               Welcome to our Question Answering System
             </h3>
@@ -54,7 +91,7 @@ class LandingPage extends Component {
                 value={this.state.question}
                 onChange={this.handleSearchChange}
               />
-              <Button 
+              <Button
               type="submit"
               variant="primary"
               value="Submit"
@@ -66,10 +103,13 @@ class LandingPage extends Component {
               <span className="d-block p-2 bg-primary text-white">
                 Search Results:
               </span>
+              {content}
             </div>
           </div>
         </div>
       </div>
+      </div>
+      </div> 
     );
   }
 }
