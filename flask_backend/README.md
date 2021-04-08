@@ -1,8 +1,7 @@
 # To run flask backend
 
-Go to flask_backend folder and start the virtual environment
 
-Inside flask_backend folder
+Inside flask_backend folder -> create python3 virtual environment
 
 source env/bin/activate
 
