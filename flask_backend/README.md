@@ -1,6 +1,6 @@
 # To run flask backend
 
-# Go to flask_backend folder and start the virtual environment
+Go to flask_backend folder and start the virtual environment
 
 Inside flask_backend folder
 
@@ -10,7 +10,7 @@ source env/bin/activate
 
 pip install -r requirements.txt
 
-# To run flask server, run following commands:
+# To run flask server:
 
 python3 app.py
 
