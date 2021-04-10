@@ -3,18 +3,19 @@ from flask_cors import CORS
 import spacy
 import requests
 from urllib.parse import quote
-from spacy import displacy
-import re
 import json
-from SPARQLWrapper import SPARQLWrapper, JSON
+import pkg_resources
+from symspellpy import SymSpell, Verbosity
+
+sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
+dictionary_path = pkg_resources.resource_filename(
+    "symspellpy", "frequency_dictionary_en_82_765.txt")
+sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 
 nlp = spacy.load("en_core_web_trf")
 
 app = Flask(__name__)
-CORS(app)  # Let the api acces for frontends.
-
-
-
+CORS(app)  # Let the api access for frontends.
 
 # on the terminal type: flask run or curl http://127.0.0.1:5000/
 # returns hello world when we use GET.
@@ -33,10 +34,36 @@ def process():
     try:
         data = request.json
         question = data['question']
+        version = data['version']
+
         print(question)
 
         langCode = "en"
-        doc = nlp(json.dumps(question))
+        doc = nlp(question)
+
+        if version == "v2":
+            print("version", version)
+
+            tokens = []
+            for token in doc:
+                if token.pos_ == "NOUN":
+                    print(token.text)
+
+                    input_term = token.text  # misspelling of "members"
+                    # max edit distance per lookup
+                    # (max_edit_distance_lookup <= max_dictionary_edit_distance)
+
+                    suggestions = sym_spell.lookup(input_term, Verbosity.CLOSEST,
+                                                   max_edit_distance=2)
+                    # display suggestion term, term frequency, and edit distance
+                    for suggestion in suggestions:
+                        print("suggestion", suggestion.term)
+                        tokens.append(suggestion.term)
+                        break
+                else:
+                    tokens.append(token.text)
+
+                doc = nlp(" ".join(tokens))
 
         for token in doc:
             print(token, token.pos_)
@@ -71,11 +98,12 @@ def process():
             print(answer)
             return(answer)
         elif len(entitySet) == 1 and len(pos_nouns) != 1:
-            print("pos_nouns", pos_nouns)
-            result = json.loads(result_obj)
-            answer = result["results"]["bindings"][0]["answer"]["value"]
-            print(answer)
-            return(answer)
+            # print("pos_nouns", pos_nouns)
+            # result = json.loads(result_obj)
+            # answer = result["results"]["bindings"][0]["answer"]["value"]
+            # print(answer)
+            # return(answer)
+            return getQueryResults(entitySet, langCode)
         else:
             return getQueryResults(entitySet, langCode)
 

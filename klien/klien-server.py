@@ -26,9 +26,9 @@ class ItemStore(object):
         request.setHeader('Content-Type', 'application/json')
         content = json.loads(request.content.read())
 
-        print("123langCode")
-        print(content["langCode"])
-        langCode = content["langCode"]
+        #print("123langCode")
+        #print(content["langCode"])langCode
+        langCode = "en"
         text = content["data"]
 
         print("pure text")
@@ -85,7 +85,11 @@ class ItemStore(object):
         print("entitySet")
         print(entitySet)
 
-        print("chunks")
+        print("chunks") #What is emal of Dan
+        # What machine learning course are offered by CMPE depart?
+        # ?ent - category - "machine learning"
+        # ?ent - offeredBy - "CMPE departmnet"
+        # ?ent - type - course
         chunks = set()
         for chunk in doc.noun_chunks:
             print(chunk.text, chunk.label_, chunk.root.text)
