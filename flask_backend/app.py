@@ -6,6 +6,7 @@ from urllib.parse import quote
 import json
 import pkg_resources
 from symspellpy import SymSpell, Verbosity
+from difflib import get_close_matches
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 dictionary_path = pkg_resources.resource_filename(
@@ -41,7 +42,7 @@ def process():
         langCode = "en"
         doc = nlp(question)
 
-        if version == "v2":
+        if version == "v2" or version == "v3":
             print("version", version)
 
             tokens = []
@@ -65,27 +66,36 @@ def process():
 
                 doc = nlp(" ".join(tokens))
 
+        entities = doc.ents
+        entitySet = []
+
+        print("** entities")
+        for entity in entities:
+            print(entity.text, entity.label_)
+
+            if version == "v2" or version == "v3":
+                entity_names = get_entity_names()
+                print(entity_names)
+                if entity.text not in entity_names:
+                    close_matches = get_close_matches(entity.text, entity_names)
+                    for close_match in close_matches:
+                        entitySet.append(close_match)
+                        break
+            else:
+                entitySet.append(str(entity))
+
+        print("entitySet")
+        print(entitySet)
+
         for token in doc:
             print(token, token.pos_)
 
         print("Nouns:", [token.text for token in doc if token.pos_ == "NOUN"])
         pos_nouns = [token.text for token in doc if token.pos_ == "NOUN" and len(token) >= 2]
 
-        entities = doc.ents
 
-        entitySet = []
 
-        print("** entities")
-        for entity in entities:
-            print(entity.text, entity.label_)
-            entitySet.append(str(entity))
-            # splits = str(entity).split(" ")
-            #
-            # for split in splits:
-            #     entitySet.add(str(split).strip())
 
-        print("entitySet")
-        print(entitySet)
 
         print("chunks")
         chunks = set()
@@ -112,28 +122,49 @@ def process():
         return "Error occurred!!" + e
 
 
+def get_entity_names():
+    query = """
+                SELECT ?name 
+                WHERE {
+                  ?entity <http://www.w3.org/2001/ama/sjsu#name> ?name .
+                }
+            """
+    percent_encoded_sparql = quote(query, safe='')
+
+    url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
+    response = requests.post(url)
+    print(response.json())
+    #return json.dumps(response.json())
+
+    if "results" in response.json():
+        bindings = response.json()["results"]["bindings"]
+        return [binding["name"]["value"] for binding in bindings]
+    else:
+        return []
+
+
 def one_entity_one_predicate(entitySet, pos_nouns, langCode):
-        data = {'entities': []}
-        print("entity", entitySet[0])
-        entity = entitySet[0]
-        print("noun", pos_nouns[0])
-        noun = pos_nouns[0]
+    data = {'entities': []}
+    print("entity", entitySet[0])
+    entity = entitySet[0]
+    print("noun", pos_nouns[0])
+    noun = pos_nouns[0]
 
-        query = """
-            SELECT ?answer 
-            WHERE {
-              
-              ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
-              ?subject <http://www.w3.org/2001/ama/sjsu#%s> ?answer
-            }
-            """ % (entity, noun)
+    query = """
+        SELECT ?answer 
+        WHERE {
+          
+          ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
+          ?subject <http://www.w3.org/2001/ama/sjsu#%s> ?answer
+        }
+        """ % (entity, noun)
 
-        percent_encoded_sparql = quote(query, safe='')
+    percent_encoded_sparql = quote(query, safe='')
 
-        url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
-        response = requests.post(url, data=data)
-        print(response.json())
-        return json.dumps(response.json())
+    url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
+    response = requests.post(url, data=data)
+    print(response.json())
+    return json.dumps(response.json())
 
 def getQueryResults(entitySet, langCode):
         data = {}
