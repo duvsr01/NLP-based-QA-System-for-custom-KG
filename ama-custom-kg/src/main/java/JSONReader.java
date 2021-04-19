@@ -33,8 +33,6 @@ public class JSONReader {
                 }
             }
         }
-
-
     }
 
     public static void readJSONFile() {
@@ -43,7 +41,8 @@ public class JSONReader {
         ArrayList<String> entityCreationOrder = new ArrayList<>(
                 Arrays.asList("department",
                         "course",
-                        "personel"));
+                        "personel",
+                        "semester"));
 
         try (FileReader reader = new FileReader(JSONReader.class.getResource("sjsu-entities.json").getFile())) {
             //Read JSON file
@@ -63,6 +62,8 @@ public class JSONReader {
                     case "course":
                         entityMap = Test.courseMap;
                         break;
+                    case "semester":
+                        entityMap = Test.semesterMap;
                     default:
                         System.out.println("default");
                         break;
@@ -72,7 +73,6 @@ public class JSONReader {
                     final Map<String, Property> finalEntityMap = entityMap;
                     employeeList.forEach(emp -> parseDatabaseObject((JSONObject) emp, finalEntityMap));
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();

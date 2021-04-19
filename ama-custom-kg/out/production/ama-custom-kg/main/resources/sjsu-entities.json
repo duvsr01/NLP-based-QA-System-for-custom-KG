@@ -10,22 +10,12 @@
   "department": [
     {"sjsuId": "d1", "name": "CMPE", "type": "Department"},
     {"sjsuId": "d2", "name": "CS", "type": "Department"},
-    {"sjsuId": "d3", "name": "GAPE", "type": "Department"}
-  ],
+    {"sjsuId": "d3", "name": "GAPE", "type": "Department"}],
 
   "course": [
     {"sjsuId": "c1", "number": "198", "name": "Introduction to Programming", "department_sjsuId": "d2", "type": "course"},
     {"sjsuId": "c2", "number": "202","name": "Software Systems Engineering", "department_sjsuId": "d1", "type": "course"},
     {"sjsuId": "c3", "number": "212","name": "Basics of ML",
       "field": "machine learning", "department_sjsuId": "d1", "type": "course"}
-  ],
-
-  "semester": [
-    {"sjsuId": "s1", "name": "Spring 2021",
-      "tuition_fees": "Per unit tuition fees is $1200 and deadline to pay the fees is Jan 10, 2021", "type": "semester"},
-    {"sjsuId": "s2", "name": "Summer 2021",
-      "tuition_fees": "Per unit tuition fees is $800 and deadline to pay the fees is May 10, 2021", "type": "semester"},
-    {"sjsuId": "s3", "name": "Fall 2021",
-      "tuition_fees": "Per unit tuition fees is $1200 and deadline to pay the fees is August 10, 2021", "type": "semester"}
   ]
 }

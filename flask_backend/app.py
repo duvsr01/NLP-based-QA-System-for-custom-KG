@@ -9,6 +9,7 @@ from symspellpy import SymSpell, Verbosity
 from difflib import get_close_matches
 from spacy.matcher import PhraseMatcher
 import re
+from googletrans import Translator
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 dictionary_path = pkg_resources.resource_filename(
@@ -77,12 +78,15 @@ def get_entity_properties():
 
 
 entity_names_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#name>")
+alias_names_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#hasAlias>")
 entity_names = set(entity_names_arr)
 # phrases = ['machine learning', 'robots', 'intelligent agents']
 phrases = entity_names_arr
 patterns = [nlp(text) for text in phrases]
 phrase_matcher.add('AI', None, *patterns)
 entity_properties = get_entity_properties()
+entity_properties.extend(alias_names_arr)
+print("entity_properties", entity_properties)
 prop_patterns = [nlp(text) for text in entity_properties]
 prop_phrase_matcher.add('property', None, *prop_patterns)
 
@@ -123,8 +127,6 @@ def process():
             print(match_id, string_id, start, end, span.text)
             entity_set.append(span.text)
 
-
-
         if version >= 2:
             print("version", version)
 
@@ -157,6 +159,7 @@ def process():
             property_set.append(span.text)
 
         entities = doc.ents
+        print("** property_set", property_set)
 
         print("** entities")
         for entity in entities:
@@ -171,8 +174,8 @@ def process():
                             entity_set.append(close_match)
                             break
             else:
-                if str(entity) not in entity_set:
-                    entity_set.append(str(entity))
+                if str(entity.text) not in entity_set:
+                    entity_set.append(str(entity.text))
 
         print("entitySet")
         print(entity_set)
@@ -199,6 +202,8 @@ def process():
                         for close_match in close_matches:
                             entity_set.append(close_match)
                             break
+        if len(property_set) > 1:
+            property_set = property_set[:1]
 
         if (len(entity_set) == 1) and (len(property_set) == 1):
             result_obj = one_entity_one_predicate(entity_set, property_set, langCode)
@@ -213,11 +218,6 @@ def process():
 
             return getQueryResults(entity_set, langCode)
         elif len(entity_set) == 1 and len(property_set) != 1:
-            # print("pos_nouns", pos_nouns)
-            # result = json.loads(result_obj)
-            # answer = result["results"]["bindings"][0]["answer"]["value"]
-            # print(answer)
-            # return(answer)
             return getQueryResults(entity_set, langCode)
         else:
             return getQueryResults(entity_set, langCode)
@@ -234,14 +234,37 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
     print("property", property_set[0])
     noun = property_set[0]
 
-    query = """
-        SELECT ?answer 
-        WHERE {
+    # query = """
+    #     SELECT ?answer
+    #     WHERE {
+    #
+    #       ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
+    #       ?subject <http://www.w3.org/2001/ama/sjsu#%s>|<http://www.w3.org/2001/ama/sjsu#hasAlias> ?answer
+    #     }
+    #     """ % (entity, noun)
 
-          ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
-          ?subject <http://www.w3.org/2001/ama/sjsu#%s> ?answer
-        }
-        """ % (entity, noun)
+    query = """
+    SELECT DISTINCT ?answer
+    WHERE {
+      {
+         ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s"
+         OPTIONAL
+         {
+            ?subject <http://www.w3.org/2001/ama/sjsu#%s> ?answer .
+         }
+      } 
+      UNION 
+      {
+         ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s"
+         OPTIONAL
+         {
+            ?prop <http://www.w3.org/2001/ama/sjsu#hasAlias> "%s" .
+            ?subject ?prop ?answer
+         }
+      }
+      FILTER(strlen(?answer)>0)
+    }
+    """% (entity, noun, entity, noun)
 
     percent_encoded_sparql = quote(query, safe='')
 

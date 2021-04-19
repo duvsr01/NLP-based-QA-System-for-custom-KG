@@ -15,10 +15,12 @@ public class Test {
     public static Property FULL_NAME_PROP = MODEL.createProperty(AMA_BASE + "#fullName");
     public static Property NAME_PROP = MODEL.createProperty(AMA_BASE + "#name");
     public static Property TYPE_PROP = MODEL.createProperty(AMA_BASE + "#type");
+    public static Property FIELD_PROP = MODEL.createProperty(AMA_BASE + "#field");
     public static Property DEPARTMENT_NAME_PROP = MODEL.createProperty(AMA_BASE + "#department");
     public static Property NUMBER_PROP = MODEL.createProperty(AMA_BASE + "#number");
     public static Property SJSU_ID_PROP = MODEL.createProperty(AMA_BASE + "#sjsuId");
     public static Property EMAIL_PROP = MODEL.createProperty(AMA_BASE + "#email");
+    public static Property TUITION_FEES_PROP = MODEL.createProperty(AMA_BASE + "#tuitionFees");
     public static Property PROPERTY_PROP = MODEL.createProperty(AMA_BASE + "#property");
     public static Property HAS_ALIAS = MODEL.createProperty(AMA_BASE + "#hasAlias");
 
@@ -50,10 +52,13 @@ public class Test {
     public static  Map<String, List<String>> aliases  = new HashMap<String, List<String>>() {{
         put("email", new ArrayList<>(
                 Arrays.asList("email", "email id", "email address")));
+        put("tuition_fees", new ArrayList<>(
+                Arrays.asList("tuition fees", "tuition", "fees", "fee")));
     }};
 
     public static  Map<String, Property> aliasMap  = new HashMap<String, Property>() {{
         put("email", EMAIL_PROP);
+        put("tuition_fees", TUITION_FEES_PROP);
     }};
 
     public static  Map<String, Property> departmentMap  = new HashMap<String, Property>() {{
@@ -62,15 +67,22 @@ public class Test {
         put("type", TYPE_PROP);
     }};
 
-    public static  Map<String, Property> courseMap  = new HashMap<String, Property>() {{
+    public static  Map<String, Property> semesterMap  = new HashMap<String, Property>() {{
+        put("name", NAME_PROP);
+        put("sjsuId", SJSU_ID_PROP);
+        put("tuition_fees", TUITION_FEES_PROP);
+    }};
+
+    public static  Map<String, Property> courseMap = new HashMap<String, Property>() {{
         put("name", NAME_PROP);
         put("sjsuId", SJSU_ID_PROP);
         put("number", NUMBER_PROP);
         put("department", DEPARTMENT_NAME_PROP);
         put("type", TYPE_PROP);
+        put("field", FIELD_PROP);
     }};
 
-    public static  Map<String, Property> personelMap  = new HashMap<String, Property>() {{
+    public static  Map<String, Property> personelMap = new HashMap<String, Property>() {{
         put("firstName", FIRST_NAME_PROP);
         put("lastName", LAST_NAME_PROP);
         put("name", NAME_PROP);

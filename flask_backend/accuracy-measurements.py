@@ -29,7 +29,14 @@ questions = [
         "question": "What is the email address of Dan Harky?",
         "langCode": "en",
         "answer": "dan.harkey@sjsu.edu"
+    },
+    {
+        "question": "What is the deadline to pay Fall 2021 Tuition Fee?",
+        "langCode": "en",
+        "answer": "Per unit tuition fees is $1200 and deadline to pay the fees is August 10, 2021"
     }
+
+
 ]
 
 
