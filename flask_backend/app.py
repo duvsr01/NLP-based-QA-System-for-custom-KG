@@ -10,6 +10,7 @@ from difflib import get_close_matches
 from spacy.matcher import PhraseMatcher
 import re
 from googletrans import Translator
+from suggestions import removePunctuations, chooseWords, bi_prob_dict, tri_prob_dict, quad_prob_dict
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 dictionary_path = pkg_resources.resource_filename(
@@ -277,6 +278,48 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
 def getQueryResults(entitySet, langCode):
     data = {}
     return json.dumps(data)
+
+
+
+# post request accepts a string 
+# returns list of suggestions
+@app.route('/suggestions', methods=['POST'])
+def suggestion_process():
+    error = ''
+    try:
+        data = request.json
+        print("data", data)
+        question = data['question']
+
+       # text pre-processing
+        sen = removePunctuations(question)
+        temp = sen.split()
+        if len(temp) < 3:
+            print("Please enter atleast 3 words !")
+        else:
+            temp = temp[-3:]
+        sen = " ".join(temp)
+
+        print("processed text: ",sen)
+        
+        ### PREDICTION
+        #choose most probable words for prediction
+        word_choice = chooseWords(sen)
+        
+        print("word_choices are: ",word_choice)
+        
+        result = set()
+        for word in word_choice:
+            key = input_sen + ' ' + word[1]
+            result.add(key)
+            
+        print(result)
+
+    except Exception as e:
+        print(e)
+        return "Error occurred!!" + e
+
+
 
 
 # driver function
