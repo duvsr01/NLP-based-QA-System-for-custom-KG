@@ -1,7 +1,7 @@
 {
   "personel": [
     {"sjsuId": "p1", "firstName": "Dan", "lastName": "Harkey", "name":  "Dan Harkey",
-      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": "c1"},
+      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": ["c1", "c3", "c4"]},
     {"sjsuId": "p2", "firstName": "Gopinath", "lastName": "Vinodh", "name":  "Vinodh Gopinath",
       "email": "vinodh.gopinath@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": "c2"},
     {"sjsuId": "p3", "firstName": "Cristina", "lastName": "Velarde", "name":  "Cristina Velarde",

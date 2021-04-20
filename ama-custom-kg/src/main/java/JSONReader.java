@@ -1,34 +1,55 @@
 import java.io.FileReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.jena.rdf.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class JSONReader {
-    public static void parseDatabaseObject(JSONObject employee, Map<String, Property> entityMap) {
+
+
+    public static void parseDatabaseObject(JSONObject jsonObject, Map<String, Property> entityMap) {
         Resource danHarkey
-                = Test.MODEL.createResource(Test.AMA_BASE + "/" + employee.get("sjsuId"));
+                = Test.MODEL.createResource(Test.AMA_BASE + "/" + jsonObject.get("sjsuId"));
 
         //System.out.println(employee.keySet());
-        for (Object key: employee.keySet()) {
+        for (Object key: jsonObject.keySet()) {
             //System.out.println("key: " + key + " val: " + employee.get(key));
             if (entityMap.containsKey(key)) {
-                danHarkey.addProperty(entityMap.get(key), employee.get(key).toString());
+
+                danHarkey.addProperty(entityMap.get(key), jsonObject.get(key).toString());
             } else {
                 String key_first_part = key.toString().split("_")[0];
-                StmtIterator iter = Test.MODEL.listStatements(new SimpleSelector( null, Test.SJSU_ID_PROP, employee.get(key)));
+                Object jso = jsonObject.get(key);
 
-                if (iter.hasNext()) {
-                    Statement resStemt = iter.nextStatement();
-                    //System.out.println("found: " + resStemt.getSubject());
+                if (jso.getClass().toString().equals("class org.json.simple.JSONArray")) {
+                    JSONArray objects = (JSONArray) jso;
+                    for (Object o : objects) {
+                        StmtIterator iter = Test.MODEL.listStatements(new SimpleSelector( null, Test.SJSU_ID_PROP, o));
 
-                    if (entityMap.containsKey(key_first_part)) {
-                        danHarkey.addProperty(entityMap.get(key_first_part), resStemt.getSubject());
+                        if (iter.hasNext()) {
+                            Statement resStemt = iter.nextStatement();
+
+                            if (entityMap.containsKey(key_first_part)) {
+                                danHarkey.addProperty(entityMap.get(key_first_part), resStemt.getSubject());
+                            }
+                        }
+                    }
+                } else {
+                    StmtIterator iter = Test.MODEL.listStatements(new SimpleSelector( null, Test.SJSU_ID_PROP, jsonObject.get(key)));
+
+                    if (iter.hasNext()) {
+                        Statement resStemt = iter.nextStatement();
+
+                        if (entityMap.containsKey(key_first_part)) {
+                            danHarkey.addProperty(entityMap.get(key_first_part), resStemt.getSubject());
+                        }
                     }
                 }
             }

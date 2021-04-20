@@ -118,6 +118,7 @@ public class Test {
                 = MODEL.createResource(AMA_BASE + "/" + "VinodhGopinath_789")
                 .addProperty(FULL_NAME_PROP, "Vinodh Gopinath")
                 .addProperty(FIRST_NAME_PROP, "Vinodh")
+                .addProperty(FIRST_NAME_PROP, "Name2")
                 .addProperty(LAST_NAME_PROP, "Gopinath");
 
 //                .addProperty(NAME_PROP,
