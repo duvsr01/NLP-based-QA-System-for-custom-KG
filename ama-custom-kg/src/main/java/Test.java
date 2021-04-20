@@ -17,12 +17,14 @@ public class Test {
     public static Property TYPE_PROP = MODEL.createProperty(AMA_BASE + "#type");
     public static Property FIELD_PROP = MODEL.createProperty(AMA_BASE + "#field");
     public static Property DEPARTMENT_NAME_PROP = MODEL.createProperty(AMA_BASE + "#department");
+    public static Property TEACHES_PROP = MODEL.createProperty(AMA_BASE + "#teaches");
     public static Property NUMBER_PROP = MODEL.createProperty(AMA_BASE + "#number");
     public static Property SJSU_ID_PROP = MODEL.createProperty(AMA_BASE + "#sjsuId");
     public static Property EMAIL_PROP = MODEL.createProperty(AMA_BASE + "#email");
     public static Property TUITION_FEES_PROP = MODEL.createProperty(AMA_BASE + "#tuitionFees");
     public static Property PROPERTY_PROP = MODEL.createProperty(AMA_BASE + "#property");
     public static Property HAS_ALIAS = MODEL.createProperty(AMA_BASE + "#hasAlias");
+    public static Property PRE_REQUISITES_PROP = MODEL.createProperty(AMA_BASE + "#preRequisites");
 
 
 
@@ -54,11 +56,14 @@ public class Test {
                 Arrays.asList("email", "email id", "email address")));
         put("tuition_fees", new ArrayList<>(
                 Arrays.asList("tuition fees", "tuition", "fees", "fee")));
+        put("pre_requisites", new ArrayList<>(
+                Arrays.asList("pre requisites", "pre-requisites", "pre req", "pre reqs", "requirements", "requirement")));
     }};
 
     public static  Map<String, Property> aliasMap  = new HashMap<String, Property>() {{
         put("email", EMAIL_PROP);
         put("tuition_fees", TUITION_FEES_PROP);
+        put("pre_requisites", TUITION_FEES_PROP);
     }};
 
     public static  Map<String, Property> departmentMap  = new HashMap<String, Property>() {{
@@ -80,6 +85,7 @@ public class Test {
         put("department", DEPARTMENT_NAME_PROP);
         put("type", TYPE_PROP);
         put("field", FIELD_PROP);
+        put("pre_requisites", PRE_REQUISITES_PROP);
     }};
 
     public static  Map<String, Property> personelMap = new HashMap<String, Property>() {{
@@ -88,6 +94,7 @@ public class Test {
         put("name", NAME_PROP);
         put("type", TYPE_PROP);
         put("department", DEPARTMENT_NAME_PROP);
+        put("course", TEACHES_PROP);
         put("sjsuId", SJSU_ID_PROP);
         put("email", EMAIL_PROP);
     }};

@@ -43,14 +43,6 @@ questions = [
 def get_answer(question):
     response = requests.post(URL, json=question)
     return response.text
-    #print(response.json())
-
-    # if "results" in response.json():
-    #     bindings = response.json()["results"]["bindings"]
-    #     for binding in bindings:
-    #         return binding["answer"]["value"]
-    # else:
-    #     return "No results"
 
 
 if __name__ == '__main__':
@@ -88,4 +80,5 @@ if __name__ == '__main__':
         print("precision", precision)
         print("recall", recall)
         print("f_measure", f_measure)
+        print("\n----------------------------------------------------------\n")
 

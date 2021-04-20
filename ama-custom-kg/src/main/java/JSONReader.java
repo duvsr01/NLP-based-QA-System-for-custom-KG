@@ -21,7 +21,7 @@ public class JSONReader {
                 danHarkey.addProperty(entityMap.get(key), employee.get(key).toString());
             } else {
                 String key_first_part = key.toString().split("_")[0];
-                StmtIterator iter = Test.MODEL.listStatements( new SimpleSelector( null, Test.SJSU_ID_PROP, employee.get(key)) );
+                StmtIterator iter = Test.MODEL.listStatements(new SimpleSelector( null, Test.SJSU_ID_PROP, employee.get(key)));
 
                 if (iter.hasNext()) {
                     Statement resStemt = iter.nextStatement();
@@ -56,11 +56,11 @@ public class JSONReader {
                     case "department":
                         entityMap = Test.departmentMap;
                         break;
-                    case "personel":
-                        entityMap = Test.personelMap;
-                        break;
                     case "course":
                         entityMap = Test.courseMap;
+                        break;
+                    case "personel":
+                        entityMap = Test.personelMap;
                         break;
                     case "semester":
                         entityMap = Test.semesterMap;

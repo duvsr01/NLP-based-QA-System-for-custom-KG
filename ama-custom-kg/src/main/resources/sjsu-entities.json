@@ -1,9 +1,9 @@
 {
   "personel": [
     {"sjsuId": "p1", "firstName": "Dan", "lastName": "Harkey", "name":  "Dan Harkey",
-      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1"},
+      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": "c1"},
     {"sjsuId": "p2", "firstName": "Gopinath", "lastName": "Vinodh", "name":  "Vinodh Gopinath",
-      "email": "vinodh.gopinath@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1"},
+      "email": "vinodh.gopinath@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": "c2"},
     {"sjsuId": "p3", "firstName": "Cristina", "lastName": "Velarde", "name":  "Cristina Velarde",
       "email": "cristina.velarde@sjsu.edu", "type": "Evaluator", "department_sjsuId": "d2"}],
 
@@ -17,7 +17,10 @@
     {"sjsuId": "c1", "number": "198", "name": "Introduction to Programming", "department_sjsuId": "d2", "type": "course"},
     {"sjsuId": "c2", "number": "202","name": "Software Systems Engineering", "department_sjsuId": "d1", "type": "course"},
     {"sjsuId": "c3", "number": "212","name": "Basics of ML",
-      "field": "machine learning", "department_sjsuId": "d1", "type": "course"}
+      "field": "machine learning", "department_sjsuId": "d1", "type": "course"},
+    {"sjsuId": "c4", "number": "298", "name": "GWAR", "department_sjsuId": "d1", "type": "course",
+      "pre_requisites": "Should have completed all MSSE core courses as well as 295A. GWAR can also be taken concurrently with 295A."
+    }
   ],
 
   "semester": [
