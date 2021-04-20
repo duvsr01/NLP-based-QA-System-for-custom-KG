@@ -30,3 +30,32 @@ Dan Harky NP Harky
 get_close_matches output = "Dan Harkey"
 
 6. Supply the entity and property to SPARQL query
+Use aliases to get all answers. For example, "email" can have aliases such as "sjsu contact", "contact email", etc. All of them are resolved to "email".
+So all three below questions will produce same answer -
+"What is the email of Dan Harky?"
+"What is the sjsu contact of Dan Harky?"
+"What is the contact email of Dan Harky?"
+
+`query = """
+    SELECT DISTINCT ?answer
+    WHERE {
+      {
+         ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s"
+         OPTIONAL
+         {
+            ?subject <http://www.w3.org/2001/ama/sjsu#%s> ?answer .
+         }
+      } 
+      UNION 
+      {
+         ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s"
+         OPTIONAL
+         {
+            ?prop <http://www.w3.org/2001/ama/sjsu#hasAlias> "%s" .
+            ?subject ?prop ?answer
+         }
+      }
+      FILTER(strlen(?answer)>0)
+    }
+    """% (entity, noun, entity, noun)`
+
