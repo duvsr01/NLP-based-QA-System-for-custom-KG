@@ -13,8 +13,8 @@ People related regex
 
 from refo import Plus, Question
 from backend.app.quepy.dsl import HasKeyword
-from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
-from .dsl import IsPerson, LabelOf, DefinitionOf, BirthDateOf, BirthPlaceOf, DaughterOf, NameOf
+from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle, Token
+from .dsl import IsPerson, LabelOf, DefinitionOf, BirthDateOf, BirthPlaceOf, DaughterOf, NameOf, EmailOf, ProfessorOf
 
 
 class Person(Particle):
@@ -22,7 +22,7 @@ class Person(Particle):
 
     def interpret(self, match):
         name = match.words.tokens
-        return IsPerson() + HasKeyword(name)
+        return HasKeyword(name)
 
 
 class WhoIs(QuestionTemplate):
@@ -37,6 +37,23 @@ class WhoIs(QuestionTemplate):
         definition = DefinitionOf(match.person)
         return definition, "define"
 
+class EmailOfQuestion(QuestionTemplate):
+    """
+    Regex for questions about the capital of a country.
+    Ex: "What is the email of Dan Harkey?"
+    """
+
+    opening = Lemma("what") + Token("is")
+    professor = Pos("DT") | Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS")
+    regex = opening + Pos("DT") + Lemma("email") + Pos("IN") + \
+        Question(Pos("DT")) +  Person() +  Question(Pos("."))
+
+    def interpret(self, match):
+        # email = ProfessorOf(match.person) + EmailOf(match.person)
+        email = EmailOf(match.person)
+        print("rdf :")
+        print(email)
+        return  email, "enum"
 
 class HowOldIsQuestion(QuestionTemplate):
     """

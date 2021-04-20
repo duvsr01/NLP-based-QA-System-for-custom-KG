@@ -266,6 +266,7 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
     }
     """% (entity, noun, entity, noun)
 
+    print(query)
     percent_encoded_sparql = quote(query, safe='')
 
     url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
@@ -281,5 +282,5 @@ def getQueryResults(entitySet, langCode):
 
 # driver function
 if __name__ == '__main__':
-    app.run(debug=False)
-    # app.run(host='0.0.0.0', port = 5001)
+    # app.run(debug=False)
+    app.run(host='0.0.0.0', port = 5001)

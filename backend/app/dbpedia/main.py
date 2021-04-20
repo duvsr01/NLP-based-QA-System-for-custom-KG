@@ -21,7 +21,8 @@ import datetime
 from backend.app import quepy
 from SPARQLWrapper import SPARQLWrapper, JSON
 from backend.app.quepy.quepyapp import QuepyApp
-sparql = SPARQLWrapper("http://dbpedia.org/sparql")
+sparql = SPARQLWrapper("http://localhost:3030/ama/sparql")
+# sparql = SPARQLWrapper("http://dbpedia.org/sparql")
 dbpedia = quepy.install("backend.app.dbpedia.dbpedia")
 
 # quepy.set_loglevel("DEBUG")
@@ -144,6 +145,13 @@ def wikipedia2dbpedia(wikipedia_url):
     else:
         return results["results"]["bindings"][0]["url"]["value"]
 
+def quepy_main2(question):
+    words = dbpedia.getTagger(question)
+    print("found words")
+    print(words)
+    QuepyApp.get_query(question)
+
+
 
 def quepy_main(question_nlp):
     default_questions = [
@@ -187,13 +195,19 @@ def quepy_main(question_nlp):
         "age": print_age,
         "dob": birth_date,
     }
+
     print(questions)
+
     for question in questions:
         print(question)
         print("-" * len(question))
 
         target, query, metadata = dbpedia.get_query(question)
-        print(target, query, metadata)
+        query = query.replace("@en", "")
+        print("target")
+        print(target)
+        print(query)
+        print(metadata)
 
         if isinstance(metadata, tuple):
             query_type = metadata[0]
@@ -213,7 +227,8 @@ def quepy_main(question_nlp):
         if query:
             sparql.setQuery(query)
             sparql.setReturnFormat(JSON)
-            results = sparql.query().convert()
+            results = sparql.query()
+            print(results)
 
             if not results["results"]["bindings"]:
                 str_return = "No answer found :("

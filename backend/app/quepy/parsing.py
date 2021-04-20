@@ -108,17 +108,24 @@ class QuestionTemplate(object):
     def get_interpretation(self, words):
         rulename = self.__class__.__name__
         print("rulename %s" % rulename)
-        logger.debug("Trying to match with regex: {}".format(rulename))
-
         match = refo.match(self.regex + Literal(_EOL), words + [_EOL])
+        print("match")
+        print(match)
 
         if not match:
             logger.debug("No match")
             return None, None
 
         try:
+            print("Trying to match with regex: {}".format(rulename))
+            print(self.regex + Literal(_EOL))
+            print(words + [_EOL])
             match = Match(match, words)
+            print("::::",match)
             result = self.interpret(match)
+            print("Result")
+            print(result)
+
         except BadSemantic as error:
             logger.debug(str(error))
             return None, None

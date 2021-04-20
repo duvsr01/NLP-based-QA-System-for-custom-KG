@@ -93,6 +93,7 @@ class HasKeyword(FixedDataRelation):
     @staticmethod
     def sanitize(text):
         # User can redefine this method if needed
+        print("text::", text)
         return text
 
 
