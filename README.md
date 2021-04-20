@@ -36,7 +36,7 @@ So all three below questions will produce same answer -
 "What is the sjsu contact of Dan Harky?"
 "What is the contact email of Dan Harky?"
 
-`query = """
+query = """
     SELECT DISTINCT ?answer
     WHERE {
       {
@@ -57,5 +57,5 @@ So all three below questions will produce same answer -
       }
       FILTER(strlen(?answer)>0)
     }
-    """% (entity, noun, entity, noun)`
+    """% (entity, noun, entity, noun)
 
