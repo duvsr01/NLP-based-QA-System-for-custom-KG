@@ -1,16 +1,16 @@
 {
   "personel": [
     {"sjsuId": "p1", "firstName": "Dan", "lastName": "Harkey", "name":  "Dan Harkey",
-      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": ["c1", "c3", "c4"]},
+      "email": "dan.harkey@sjsu.edu", "type": "faculty", "department_sjsuId": "d1", "course_sjsuId": ["c1", "c3", "c4"]},
     {"sjsuId": "p2", "firstName": "Gopinath", "lastName": "Vinodh", "name":  "Vinodh Gopinath",
-      "email": "vinodh.gopinath@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1", "course_sjsuId": "c2"},
+      "email": "vinodh.gopinath@sjsu.edu", "type": "faculty", "department_sjsuId": "d1", "course_sjsuId": "c2"},
     {"sjsuId": "p3", "firstName": "Cristina", "lastName": "Velarde", "name":  "Cristina Velarde",
-      "email": "cristina.velarde@sjsu.edu", "type": "Evaluator", "department_sjsuId": "d2"}],
+      "email": "cristina.velarde@sjsu.edu", "type": "evaluator", "department_sjsuId": "d2"}],
 
   "department": [
-    {"sjsuId": "d1", "name": "CMPE", "type": "Department"},
-    {"sjsuId": "d2", "name": "CS", "type": "Department"},
-    {"sjsuId": "d3", "name": "GAPE", "type": "Department"}
+    {"sjsuId": "d1", "name": "CMPE", "type": "department"},
+    {"sjsuId": "d2", "name": "CS", "type": "department"},
+    {"sjsuId": "d3", "name": "GAPE", "type": "department"}
   ],
 
   "course": [

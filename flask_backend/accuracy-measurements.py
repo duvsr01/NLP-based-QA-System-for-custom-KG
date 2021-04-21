@@ -34,6 +34,16 @@ questions = [
         "question": "What is the deadline to pay Fall 2021 Tuition Fee?",
         "langCode": "en",
         "answer": "Per unit tuition fees is $1200 and deadline to pay the fees is August 10, 2021"
+    },
+    {
+        "question": "How many course are in SJSU?",
+        "langCode": "en",
+        "answer": "4 course - GWAR, Software Systems Engineering, Introduction to Programming, Basics of ML"
+    },
+    {
+        "question": "How many course are taught by Dan Harkey?",
+        "langCode": "en",
+        "answer": "3 course - GWAR, Introduction to Programming, Basics of ML"
     }
 
 
