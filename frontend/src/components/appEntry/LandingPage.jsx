@@ -80,6 +80,10 @@ onKeyUp(event) {
       this.setState({
         answer:response.data
       })
+      }else{
+        this.setState({
+          answer:""
+        })
       }
       })
     .catch(error => {
