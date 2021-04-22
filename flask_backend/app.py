@@ -5,12 +5,14 @@ import requests
 from urllib.parse import quote
 import json
 import pkg_resources
+import pickle
 from symspellpy import SymSpell, Verbosity
 from difflib import get_close_matches
 from spacy.matcher import PhraseMatcher
 import re
 from googletrans import Translator
-from suggestions import removePunctuations, chooseWords, bi_prob_dict, tri_prob_dict, quad_prob_dict
+from suggestions import removePunctuations, chooseWords
+
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 dictionary_path = pkg_resources.resource_filename(
@@ -282,7 +284,7 @@ def getQueryResults(entitySet, langCode):
 
 
 # post request accepts a string 
-# returns list of suggestions
+# returns list of sentence suggestions
 @app.route('/suggestions', methods=['POST'])
 def suggestion_process():
     error = ''
@@ -291,7 +293,10 @@ def suggestion_process():
         print("data", data)
         question = data['question']
 
-       # text pre-processing
+        if(not (question and not question.isspace())):
+            return ('', 204)
+
+       # Text Pre-Processing on the sentence typed
         sen = removePunctuations(question)
         temp = sen.split()
         if len(temp) < 3:
@@ -303,23 +308,39 @@ def suggestion_process():
         print("processed text: ",sen)
         
         ### PREDICTION
-        #choose most probable words for prediction
-        word_choice = chooseWords(sen)
+        # choose most probable words for prediction
+        # load the pre-computed probability dictionaries from pickle files
+        with open('./pickle/bi_prob_dict.pickle', 'rb') as bi_prob:
+                bi_prob_dict = pickle.load(bi_prob)
+
+        with open('./pickle/tri_prob_dict.pickle', 'rb') as tri_prob:
+                tri_prob_dict = pickle.load(tri_prob)
+
+        with open('./pickle/quad_prob_dict.pickle', 'rb') as quad_prob:
+                quad_prob_dict = pickle.load(quad_prob)
+
+        word_choice = chooseWords(sen,bi_prob_dict,tri_prob_dict,quad_prob_dict)
         
         print("word_choices are: ",word_choice)
         
         result = set()
         for word in word_choice:
-            key = input_sen + ' ' + word[1]
+            key = sen + ' ' + word[1]
             result.add(key)
-            
-        print(result)
+
+        def convert_to_list(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            raise TypeError
+
+        response = json.dumps(result, default=convert_to_list)  
+        print(response)
+
+        return response
 
     except Exception as e:
         print(e)
         return "Error occurred!!" + e
-
-
 
 
 # driver function

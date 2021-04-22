@@ -1,8 +1,7 @@
 import string
 from collections import defaultdict
 from nltk.util import ngrams
-
-
+import pickle
 
 quad_prob_dict = defaultdict(list)         #for storing the probable  words for Quadgram sentences     
 tri_prob_dict = defaultdict(list)          #for storing the probable  words for Trigram sentences     
@@ -75,12 +74,8 @@ def loadCorpus(file_path, bi_dict, tri_dict, quad_dict, vocab_dict):
                 i=i+1
         
         
-            content = " ".join(temp_l)
-        
-#             print(content)
-            
-
-            
+            content = " ".join(temp_l) 
+#             print(content)     
             token = content.split()
 #             print(token)
             word_len = word_len + len(token)
@@ -178,7 +173,6 @@ def findQuadgramProbAdd1(vocab_dict, bi_dict, tri_dict, quad_dict, quad_prob_dic
         else:
             quad_prob_dict[tri_sen].append([prob,quad_token[-1]])
         
-   
     prob = None
     quad_token = None
     tri_sen = None
@@ -213,7 +207,6 @@ def findTrigramProbAdd1(vocab_dict, bi_dict, tri_dict, tri_prob_dict):
         else:
             tri_prob_dict[bi_sen].append([prob,tri_token[-1]])
             
-  
     prob = None
     tri_token = None
     bi_sen = None
@@ -241,12 +234,7 @@ def findBigramProbAdd1(vocab_dict, bi_dict, bi_prob_dict):
         
         #find the probability
         #add 1 smoothing has been used
-        #print("step3: ",bi_dict[bi]+1)
-        #print("step4: ",vocab_dict[unigram])
-        #print("step5: ",V)
         prob = ( bi_dict[bi] + 1 ) / ( vocab_dict[unigram] + V)
-        
-        #print(prob)
 
         #bi_prob_dict is a dict of list
         #if the unigram sentence is not present in the Dictionary then add it
@@ -256,8 +244,7 @@ def findBigramProbAdd1(vocab_dict, bi_dict, bi_prob_dict):
         #the unigram sentence is present but the probable word is missing,then add it
         else:
             bi_prob_dict[unigram].append([prob,bi_token[-1]])
-    
-   
+
     prob = None
     bi_token = None
     unigram = None
@@ -286,15 +273,10 @@ def sortProbWordDict(bi_prob_dict, tri_prob_dict, quad_prob_dict):
 
 #returns: list[float,string]
 #arg: string,dict,dict,dict
-def chooseWords(sen):
+def chooseWords(sen,bi_prob_dict,tri_prob_dict,quad_prob_dict):
     word_choice = []
     token = sen.split()
-    print("token is ", token)
-    print("part is: ",token[-1])
 
-
-    print("-------------- prob_bi_dict ---------------------")
-    print(bi_prob_dict)
     if token[-1] in bi_prob_dict:
         word_choice +=  bi_prob_dict[token[-1]][:1]
         print('Word Choice bi dict:' , word_choice)
@@ -313,15 +295,13 @@ def main():
     tri_dict = defaultdict(int)            #for keeping count of sentences of three words
     quad_dict = defaultdict(int)           #for keeping count of sentences of four words
   
-    
-    train_file = 'corpusfile.txt'
+    #loading the file to train the model
+    train_file = './corpus/corpusfile.txt'
 
     #load the corpus for the dataset
     token_len = loadCorpus(train_file, bi_dict, tri_dict, quad_dict, vocab_dict)
-
     print(token_len)
 
-    
     #create bigram Probability Dictionary
     findBigramProbAdd1(vocab_dict, bi_dict, bi_prob_dict)
     #create trigram Probability Dictionary
@@ -330,3 +310,19 @@ def main():
     findQuadgramProbAdd1(vocab_dict, bi_dict, tri_dict, quad_dict, quad_prob_dict)
     #sort the probability dictionaries
     sortProbWordDict(bi_prob_dict, tri_prob_dict, quad_prob_dict)
+
+    # pickling bi_prob_dict
+    bi_prob_dict_file = open("./pickle/bi_prob_dict.pickle", "wb")
+    pickle.dump(bi_prob_dict, bi_prob_dict_file)
+
+    # pickling tri_prob_dict
+    tri_prob_dict_file = open("./pickle/tri_prob_dict.pickle","wb")
+    pickle.dump(tri_prob_dict, tri_prob_dict_file)
+
+    # pickling quad_prob_dict
+    quad_prob_dict_file = open("./pickle/quad_prob_dict.pickle","wb")
+    pickle.dump(quad_prob_dict, quad_prob_dict_file)
+
+
+if __name__ == '__main__':
+    main()
