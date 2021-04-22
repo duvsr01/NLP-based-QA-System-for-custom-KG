@@ -14,7 +14,7 @@ python3 app.py
 
 The flask server should be up and running and API requests can now be made.
 
-## Route - Suggestions
+## Routes
 
 ### POST url/suggestions
 

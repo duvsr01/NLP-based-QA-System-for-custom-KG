@@ -5,7 +5,7 @@ import pickle
 
 quad_prob_dict = defaultdict(list)         #for storing the probable  words for Quadgram sentences     
 tri_prob_dict = defaultdict(list)          #for storing the probable  words for Trigram sentences     
-bi_prob_dict = defaultdict(list)           #for storing the probable  words for Bigram sentences
+bi_prob_dict = defaultdict(list)          #for storing the probable  words for Bigram sentences
 #returns: string
 #arg: string
 #remove punctuations, change to lowercase ,retain the apostrophe mark

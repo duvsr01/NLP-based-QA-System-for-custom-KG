@@ -114,11 +114,11 @@ def process():
         print("data", data)
 
         question = data['question']
-        version = data['version']
-
         print("question", question)
 
+        version = 3
         langCode = "en"
+        
         doc = nlp(question)
         entity_set = []
         property_set = []

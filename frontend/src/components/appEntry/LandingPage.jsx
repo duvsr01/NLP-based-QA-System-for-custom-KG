@@ -1,24 +1,29 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl,Button, Col, Row,Card,Container } from "react-bootstrap";
 import axios from "axios";
+import AutoCompleteText from "./AutoCompleteText";
+import './AutoCompleteText.css';
 
 class LandingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       question: "",
-      answer:""
+      answer:"",
+      suggestions:[],
     };
+    this.onKeyUp = this.onKeyUp.bind(this);
+    this.handleSubmit= this.handleSubmit.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
   handleSearchChange = e => {
     this.setState({
       question: e.target.value
     });
-  };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  if(this.state.question.length<0) 
+    return;
 
     const data = {
       question: this.state.question
@@ -26,13 +31,56 @@ class LandingPage extends Component {
     console.log("data is" + JSON.stringify(data));
 
     axios
+    .post("http://127.0.0.1:5000/suggestions",data) 
+    .then(response => {
+      let newSuggestions=[];
+      console.log("Status Code : ", response.status);
+      console.log("Suggestions: "+response.data);
+      let results = response.data
+      for(let i in results){
+        newSuggestions.push(results[i]);
+      }
+      console.log("newSuggestions:"+newSuggestions);
+
+      this.setState({
+        suggestions:newSuggestions
+      });
+      })
+    .catch(error => {
+      console.log("Error: "+error);
+    });
+  };
+
+  suggestionSelected (item){
+    this.setState(()=>({
+        question:item,
+        suggestions:[],
+    }))
+}  
+
+onKeyUp(event) {
+  if (event.charCode === 13) {
+   this.handleSubmit();
+  }
+}
+
+  handleSubmit = e => {
+    // e.preventDefault();
+
+    const data = {
+      question: this.state.question
+    };
+    console.log("data is" + JSON.stringify(data));
+    axios
     .post("http://127.0.0.1:5000/question", data) 
     .then(response => {
       console.log("Status Code : ", response.status);
       console.log("Answer: "+response.data);
+      if(Object.keys(response.data).length !== 0){
       this.setState({
         answer:response.data
       })
+      }
       })
     .catch(error => {
       console.log("Error: "+error);
@@ -40,26 +88,26 @@ class LandingPage extends Component {
 
   };
 
-  //klien server version
 
-    // {headers:{"Access-Control-Allow-Origin":"http://localhost:3000"}}
-    //   axios
-    //   .post("http://localhost:8082/ok", data) 
-    //   .then(response => {
-    //     console.log("Status Code : ", response.status);
-    //     console.log("Answer: "+response.data);
-    //     // this.setState({
-    //     //   answer:response.data
-    //     // })
-    //     })
-    //   .catch(error => {
-    //     console.log("Error: "+error);
-    //   });
-
-    // };
 
   render() {
     let content;
+
+    let displaySuggestions;
+    const {suggestions,text} =  this.state;
+    if(suggestions.length === 0){
+        displaySuggestions= null;
+    }
+    else{
+        displaySuggestions= (
+            <ul className="AutoCompleteText" >
+            {suggestions.map((item)=>         
+            <li className="AutoCompleteText" key={item} onClick={()=>this.suggestionSelected(item)}>{item}</li>)}
+        </ul>
+
+        );
+    }
+
     if(this.state.answer){
      content =
       <div>
@@ -85,19 +133,25 @@ class LandingPage extends Component {
           </div>
           <div>
             <br />
-            <InputGroup className="mb-3 col-sm-10">
-              <FormControl
-                placeholder="Enter Search Query!"
+
+          <div className="input-group">
+            <input className="form-control border-end-0 border" 
+                type="text"  
+                placeholder="Enter Search Query!" 
+                id="example-search-input"
                 value={this.state.question}
                 onChange={this.handleSearchChange}
-              />
-              <Button
-              type="submit"
-              variant="primary"
-              value="Submit"
-              onClick={this.handleSubmit}
-              >Search</Button>
-            </InputGroup>
+                onKeyPress={this.onKeyUp}
+            />
+            
+            <div className="input-group-append">
+              <button className="btn btn-secondary" type="button"  onClick={this.handleSubmit} >
+                <i className="fa fa-search"></i>
+              </button>
+            </div>
+            {displaySuggestions}
+            </div>
+            
             <br />
             <div>
               <span className="d-block p-2 bg-primary text-white">
