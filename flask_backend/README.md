@@ -1,6 +1,5 @@
 # To run flask backend
 
-
 Inside flask_backend folder -> create python3 virtual environment
 
 source env/bin/activate
@@ -14,3 +13,15 @@ pip install -r requirements.txt
 python3 app.py
 
 The flask server should be up and running and API requests can now be made.
+
+## Route - Suggestions
+
+### POST url/suggestions
+
+Content-Type: application/json
+{
+"question": "IRS tax filing"
+}
+
+Expected Response:
+["irs tax filing deadline"]
