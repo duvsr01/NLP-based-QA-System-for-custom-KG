@@ -14,7 +14,7 @@ Domain specific language for DBpedia quepy.
 from backend.app.quepy.dsl import FixedType, HasKeyword, FixedRelation, FixedDataRelation
 
 # Setup the Keywords for this application
-HasKeyword.relation = "rdfs:label"
+HasKeyword.relation = "<http://www.w3.org/2001/ama/sjsu#name>"
 HasKeyword.language = "en"
 
 
@@ -89,6 +89,13 @@ class CapitalOf(FixedRelation):
     relation = "dbpedia-owl:capital"
     reverse = True
 
+class ProfessorOf(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#name>"
+    reverse = True
+
+class EmailOf(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#email>"
+    reverse = True
 
 class LanguageOf(FixedRelation):
     relation = "dbpprop:officialLanguages"

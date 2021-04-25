@@ -38,11 +38,12 @@ def adapt(x):
 
 
 def expression_to_sparql(e, full=False):
-    template = u"{preamble}\n" +\
-               u"SELECT DISTINCT {select} WHERE {{\n" +\
+    template = u"SELECT DISTINCT {select} WHERE {{\n" +\
                u"{expression}\n" +\
                u"}}\n"
     head = adapt(e.get_head())
+    print("head")
+    print(head)
     if full:
         select = u"*"
     else:
@@ -50,13 +51,18 @@ def expression_to_sparql(e, full=False):
     y = 0
     xs = []
     for node in e.iter_nodes():
+        print("node",node)
         for relation, dest in e.iter_edges(node):
+            print("relation", relation)
+            print("dest", dest)
             if relation is IsRelatedTo:
                 relation = u"?y{}".format(y)
                 y += 1
+            print(relation)
             xs.append(triple(adapt(node), relation, adapt(dest),
                       indentation=1))
-    sparql = template.format(preamble=settings.SPARQL_PREAMBLE,
+
+    sparql = template.format(preamble=settings.SPARQL_PREAMBLE2,
                              select=select,
                              expression=u"\n".join(xs))
     return select, sparql
