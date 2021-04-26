@@ -11,6 +11,7 @@ from spacy.matcher import PhraseMatcher
 import re
 import pickle
 from googletrans import Translator
+from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
 
 filename = 'finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
@@ -27,7 +28,7 @@ prop_phrase_matcher = PhraseMatcher(nlp.vocab)
 
 app = Flask(__name__)
 CORS(app)  # Let the api access for frontends.
-
+preComputedSentenceEmbeddings()
 
 def get_entity_names(url):
     query = """
@@ -123,7 +124,21 @@ def process():
         version = data['version']
 
         print("question", question)
+        answer = process(question, version)
+        print("answer ", answer)
+        if not answer:
+            new_question = bertMatchinQuestion(question)
+            return process(new_question,version)
+        else:
+            return answer
 
+    except Exception as e:
+        print(e)
+        return "Error occurred!!" + e
+
+
+def process(question, version):
+    try:
         predicted_intents = loaded_model.predict([question])
 
         print("predicted_intents", predicted_intents)
@@ -235,7 +250,7 @@ def process():
                 for binding in bindings:
                     return binding["answer"]["value"]
                     break
-
+            # find most similar question based on bert emebeddings
             return getQueryResults(entity_set, langCode)
         elif len(entity_set) == 1 and len(property_set) != 1:
             return getQueryResults(entity_set, langCode)
@@ -273,7 +288,6 @@ def answer_aggregation_question(entity_set, property_set, question):
         final_ans = one_entity(type_set)
         ans_str = str(len(final_ans)) + " " + type_set[0] + " - " + ", ".join(final_ans)
         print("ans_str", ans_str)
-
         return ans_str
 
 
