@@ -120,7 +120,7 @@ def process():
         print("data", data)
 
         question = data['question']
-        version = data['version']
+        version = data['question'] if 'version' in data else 3
 
         print("question", question)
 
@@ -132,6 +132,13 @@ def process():
         doc = nlp(question)
         entity_set = []
         property_set = []
+
+        tokens = []
+        for token in doc:
+            tokens.append(token.lemma_)
+
+        question = " ".join(tokens)
+        doc = nlp(question)
 
         matched_phrases = phrase_matcher(doc)
         for match_id, start, end in matched_phrases:
