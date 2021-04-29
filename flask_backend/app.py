@@ -138,6 +138,7 @@ def process():
             tokens.append(token.lemma_)
 
         question = " ".join(tokens)
+        print("question after lemmatization", question)
         doc = nlp(question)
 
         matched_phrases = phrase_matcher(doc)
@@ -389,7 +390,7 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
       }
       FILTER(strlen(?answer)>0)
     }
-    """ % (entity, noun, entity, noun)
+    """ % (entity, noun.replace(" ", ""), entity, noun)
 
     print(query)
     percent_encoded_sparql = quote(query, safe='')

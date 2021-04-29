@@ -60,7 +60,8 @@ public class JSONReader {
         JSONParser jsonParser = new JSONParser();
 
         ArrayList<String> entityCreationOrder = new ArrayList<>(
-                Arrays.asList("department",
+                Arrays.asList("major",
+                        "department",
                         "course",
                         "personel",
                         "semester"));
@@ -74,6 +75,9 @@ public class JSONReader {
 
                 Map<String, Property> entityMap = null;
                 switch (entityType) {
+                    case "major":
+                        entityMap = Test.majorMap;
+                        break;
                     case "department":
                         entityMap = Test.departmentMap;
                         break;

@@ -44,9 +44,22 @@ questions = [
         "question": "How many course are taught by Dan Harkey?",
         "langCode": "en",
         "answer": "3 course - GWAR, Introduction to Programming, Basics of ML"
+    },
+    {
+        "question": "How to reach the Student Health Center?",
+        "langCode": "en",
+        "answer": "408-924-6122"
+    },
+    {
+        "question": "What is the contact number of admissions office?",
+        "langCode": "en",
+        "answer": "408-283-7500"
+    },
+    {
+        "question": "How much is the application fees for graduate school?",
+        "langCode": "en",
+        "answer": "$70"
     }
-
-
 ]
 
 
