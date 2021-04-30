@@ -84,6 +84,21 @@ class IncumbentOf(FixedRelation):
     relation = "dbpprop:incumbent"
     reverse = True
 
+class TaughtBy(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#name>"
+    reverse = True
+
+class Fees(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#tuitionFees>"
+    reverse = True
+
+class PreReq(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#preRequisites>"
+    reverse = True
+
+class Teach(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#teaches>"
+    reverse = True
 
 class CapitalOf(FixedRelation):
     relation = "dbpedia-owl:capital"
