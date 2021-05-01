@@ -11,7 +11,7 @@ from gensim.parsing.preprocessing import remove_stopwords
 cleaned_sentences = []
 sent_bertphrase_embeddings = []
 print("Reading the csv....")
-df = pd.read_csv("questionList.csv")
+df = pd.read_csv("flask_backend/questionList.csv")
 print("Completed.")
 df.columns = ["questions", "answers"]
 

@@ -147,13 +147,6 @@ def wikipedia2dbpedia(wikipedia_url):
     else:
         return results["results"]["bindings"][0]["url"]["value"]
 
-def quepy_main2(question):
-    words = dbpedia.getTagger(question)
-    print("found words")
-    print(words)
-    QuepyApp.get_query(question)
-
-
 
 def quepy_main(question_nlp):
     default_questions = [
@@ -205,7 +198,6 @@ def quepy_main(question_nlp):
         print("-" * len(question))
 
         target, query, metadata = dbpedia.get_query(question)
-        query = query.replace("@en", "")
         print("target")
         print(target)
         print(query)
@@ -227,6 +219,7 @@ def quepy_main(question_nlp):
         if target.startswith("?"):
             target = target[1:]
         if query:
+            query = query.replace("@en", "")
             percent_encoded_sparql = quote(query, safe='')
 
             url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
@@ -250,5 +243,5 @@ def quepy_main(question_nlp):
             return ans_str
 
 
-if __name__ == '__main__':
-    quepy_main("What time is it in India?")
+# if __name__ == '__main__':
+#     quepy_main("What time is it in India?")

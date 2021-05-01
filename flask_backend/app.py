@@ -11,9 +11,16 @@ from spacy.matcher import PhraseMatcher
 import re
 import pickle
 from googletrans import Translator
-from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
 
-filename = 'finalized_model.sav'
+from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
+import os, sys
+path = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+print(path)
+sys.path.append(path)
+from backend.app.dbpedia.main import quepy_main
+
+
+filename = 'flask_backend/finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
@@ -121,21 +128,38 @@ def process():
         print("data", data)
 
         question = data['question']
-        version = data['question'] if 'version' in data else 3
+        version = data['version'] if 'version' in data else 3
 
         print("question", question)
         answer = process(question, version)
-        print("answer ", answer)
+        print("answer->", answer)
+        if version < 3:
+            return answer
         if not answer:
+            return fail_safe(question)
+
+        return answer
+
+    except Exception as e:
+        print(e)
+        return "Error occurred!!" + e
+
+
+def fail_safe(question):
+    entity_set = []
+    langCode = "en"
+    try:
+        answer = quepy_main(question)
+        print("Quepy Regex Result:",answer)
+        if answer is None:
             new_question = bertMatchinQuestion(question)
-            return process(new_question,version)
+            return process(new_question, 3)
         else:
             return answer
 
     except Exception as e:
         print(e)
         return "Error occurred!!" + e
-
 
 def process(question, version):
     try:
@@ -259,11 +283,11 @@ def process(question, version):
                     return binding["answer"]["value"]
                     break
             # find most similar question based on bert emebeddings
-            return getQueryResults(entity_set, langCode)
+            return ''
         elif len(entity_set) == 1 and len(property_set) != 1:
-            return getQueryResults(entity_set, langCode)
+            return ''
         else:
-            return getQueryResults(entity_set, langCode)
+            return ''
 
     except Exception as e:
         print(e)
