@@ -121,7 +121,7 @@ def process():
         print("data", data)
 
         question = data['question']
-        version = data['version']
+        version = data['question'] if 'version' in data else 3
 
         print("question", question)
         answer = process(question, version)
@@ -147,6 +147,14 @@ def process(question, version):
         doc = nlp(question)
         entity_set = []
         property_set = []
+
+        tokens = []
+        for token in doc:
+            tokens.append(token.lemma_)
+
+        question = " ".join(tokens)
+        print("question after lemmatization", question)
+        doc = nlp(question)
 
         matched_phrases = phrase_matcher(doc)
         for match_id, start, end in matched_phrases:
@@ -396,7 +404,7 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
       }
       FILTER(strlen(?answer)>0)
     }
-    """ % (entity, noun, entity, noun)
+    """ % (entity, noun.replace(" ", ""), entity, noun)
 
     print(query)
     percent_encoded_sparql = quote(query, safe='')

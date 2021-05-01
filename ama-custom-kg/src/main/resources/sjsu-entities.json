@@ -10,8 +10,16 @@
   "department": [
     {"sjsuId": "d1", "name": "CMPE", "type": "department"},
     {"sjsuId": "d2", "name": "CS", "type": "department"},
-    {"sjsuId": "d3", "name": "GAPE", "type": "department"}
+    {"sjsuId": "d3", "name": "GAPE", "type": "department"},
+    {"sjsuId": "d4", "name": "Student Health Center", "contact_number": "408-924-6122", "type": "department"},
+    {"sjsuId": "d5", "name": "Admissions Office", "contact_number": "408-283-7500", "type": "department"},
+    {"sjsuId": "d6", "name": "Graduate school", "application_fees": "$70", "type": "department"}
   ],
+
+  "major": [
+    {"sjsuId": "m1", "name": "interdisciplinary studies ", "type": "major", "email":  "Jeff Honda (jeffery.honda@sjsu.edu)",
+      "criteria": "Minimum GPA of 3.0 or B grade in the last 60 semester units of post-secondary academic work for admission to the Graduate Division."}
+    ],
 
   "course": [
     {"sjsuId": "c1", "number": "198", "name": "Introduction to Programming", "department_sjsuId": "d2", "type": "course"},
