@@ -67,7 +67,7 @@ def preComputedSentenceEmbeddings():
         sent_bertphrase_embeddings.append(bc.encode([sent]));
 
 def bertMatchinQuestion(question_orig):
-    print("Bert Embedding...")
+    print("********** Finding Bert Embedding *********")
     question = clean_sentence(question_orig, stopwords=False);
     print("Output: ",question)
     question_embedding = bc.encode([question]);
