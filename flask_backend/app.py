@@ -12,6 +12,7 @@ from spacy.matcher import PhraseMatcher
 import re
 from googletrans import Translator
 from suggestions import removePunctuations, chooseWords
+from searchSuggestions import suggestions, showSuggestions
 
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
@@ -282,7 +283,6 @@ def getQueryResults(entitySet, langCode):
     return json.dumps(data)
 
 
-
 # post request accepts a string 
 # returns list of sentence suggestions
 @app.route('/suggestions', methods=['POST'])
@@ -341,6 +341,34 @@ def suggestion_process():
     except Exception as e:
         print(e)
         return "Error occurred!!" + e
+
+# search suggestions - approach 2
+# post request accepts a string input
+# returns list of sentence suggestions
+@app.route('/searchSuggestions', methods=['POST'])
+def searchSuggestion_process():
+    error = ''
+    try:
+        data = request.json
+        print("data", data)
+        question = data['question']
+
+        if(not (question and not question.isspace())):
+            return ('', 204)
+
+        result = suggestions.search(question.lower(), max_suggestions=10)
+        displaySuggestions = showSuggestions(result)
+
+        for obj in displaySuggestions:
+            print(obj.suggestion)
+            print(obj.tag)
+    
+        return json.dumps(displaySuggestions,default=lambda o: o.__dict__)
+
+    except Exception as e:
+        print(e)
+        return "Error occurred!!" + e
+
 
 
 # driver function

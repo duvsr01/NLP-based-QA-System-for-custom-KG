@@ -31,7 +31,7 @@ class LandingPage extends Component {
     console.log("data is" + JSON.stringify(data));
 
     axios
-    .post("http://127.0.0.1:5000/suggestions",data) 
+    .post("http://127.0.0.1:5000/searchSuggestions",data) 
     .then(response => {
       let newSuggestions=[];
       console.log("Status Code : ", response.status);
@@ -106,7 +106,11 @@ onKeyUp(event) {
         displaySuggestions= (
             <ul className="AutoCompleteText" >
             {suggestions.map((item)=>         
-            <li className="AutoCompleteText" key={item} onClick={()=>this.suggestionSelected(item)}>{item}</li>)}
+            <li className="AutoCompleteText" key={item} onClick={()=>this.suggestionSelected(item.suggestion)}>{item.suggestion}
+             <br/>
+             <span className="font-color light-grey"><small>{item.tag}</small></span>
+            </li>
+            )}
         </ul>
 
         );

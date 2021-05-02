@@ -46,6 +46,7 @@ requests==2.25.1
 requests-file==1.5.1
 rfc3986==1.4.0
 sacremoses==0.0.44
+search-suggestion==0.1.0
 six==1.15.0
 smart-open==3.0.0
 sniffio==1.2.0
