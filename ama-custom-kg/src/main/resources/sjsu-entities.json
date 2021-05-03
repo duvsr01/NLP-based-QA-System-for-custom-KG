@@ -16,10 +16,25 @@
     {"sjsuId": "d6", "name": "Graduate school", "application_fees": "$70", "type": "department"}
   ],
 
+  "service": [
+    {"sjsuId": "service1", "name": "Parking service", "type": "service", "info":  "Download app -  ParkMobile app"},
+    {"sjsuId": "service2", "name": "CS", "central machine shop": "department", "info":  "Engineering rooms - 184, 186, 188, and 190"},
+    {"sjsuId": "service3", "name": "ETS code", "type": "service", "info":  "TOEFL and GRE (ETS Code) is 4687"}
+  ],
+
   "major": [
     {"sjsuId": "m1", "name": "interdisciplinary studies ", "type": "major", "email":  "Jeff Honda (jeffery.honda@sjsu.edu)",
       "criteria": "Minimum GPA of 3.0 or B grade in the last 60 semester units of post-secondary academic work for admission to the Graduate Division."}
     ],
+
+  "scholarship": [
+    {"sjsuId": "s1", "name": "Graduate Student Virtual Travel Award", "type": "scholarship", "studentLevel":  "graduate"},
+    {"sjsuId": "s2", "name": "Bertha Kalm Scholarship", "type": "scholarship", "studentLevel":  "graduate"},
+    {"sjsuId": "s3", "name": "Graduate Equity Fellowships", "type": "scholarship", "studentLevel":  "graduate"},
+    {"sjsuId": "s4", "name": "AANP Scholarship", "type": "scholarship", "studentLevel":  "graduate", "school":  "nursing"},
+    {"sjsuId": "s5", "name": "AORN Foundation Academic Scholarship", "type": "scholarship", "studentLevel":  "graduate", "school":  "nursing"},
+    {"sjsuId": "s6", "name": "KCNPNM Scholarship", "type": "scholarship", "studentLevel":  "graduate", "school":  "nursing"}
+  ],
 
   "course": [
     {"sjsuId": "c1", "number": "198", "name": "Introduction to Programming", "department_sjsuId": "d2", "type": "course"},
