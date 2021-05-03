@@ -40,7 +40,6 @@ preComputedSentenceEmbeddings()
 
 
 def get_rich_entity():
-
     if rich_entity:
         return rich_entity
 
@@ -154,7 +153,7 @@ def home():
     if (request.method == 'GET'):
         data = "hello world"
         return jsonify({'data': data})
-
+        
 @app.route('/richentity', methods=['GET'])
 def richEntity():
     if (request.method == 'GET'):
@@ -495,7 +494,6 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
 def getQueryResults(entitySet, langCode):
     data = {}
     return json.dumps(data)
-
 
 # driver function
 if __name__ == '__main__':
