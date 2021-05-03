@@ -28,7 +28,9 @@ public class Test {
     public static Property PROPERTY_PROP = MODEL.createProperty(AMA_BASE + "#property");
     public static Property HAS_ALIAS = MODEL.createProperty(AMA_BASE + "#hasAlias");
     public static Property PRE_REQUISITES_PROP = MODEL.createProperty(AMA_BASE + "#preRequisites");
-
+    public static Property STUDENT_LEVEL_PROP = MODEL.createProperty(AMA_BASE + "#studentLevel");
+    public static Property SCHOOL_PROP = MODEL.createProperty(AMA_BASE + "#school");
+    public static Property INFO_PROP = MODEL.createProperty(AMA_BASE + "#info");
 
 
     public static void printRDFObject() {
@@ -85,6 +87,22 @@ public class Test {
         put("contact_number", CONTACT_NUMBER_PROP);
         put("application_fees", APPLICATION_FEES_PROP);
     }};
+
+    public static  Map<String, Property> scholarshipMap  = new HashMap<String, Property>() {{
+        put("name", NAME_PROP);
+        put("sjsuId", SJSU_ID_PROP);
+        put("type", TYPE_PROP);
+        put("studentLevel", STUDENT_LEVEL_PROP);
+        put("school", SCHOOL_PROP);
+    }};
+
+    public static  Map<String, Property> serviceMap  = new HashMap<String, Property>() {{
+        put("name", NAME_PROP);
+        put("sjsuId", SJSU_ID_PROP);
+        put("type", TYPE_PROP);
+        put("info", INFO_PROP);
+    }};
+
 
     public static  Map<String, Property> semesterMap  = new HashMap<String, Property>() {{
         put("name", NAME_PROP);
