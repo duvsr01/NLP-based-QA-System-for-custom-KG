@@ -19,8 +19,6 @@ print(path)
 sys.path.append(path)
 from backend.app.dbpedia.main import quepy_main
 
-
-
 filename = 'flask_backend/finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 
