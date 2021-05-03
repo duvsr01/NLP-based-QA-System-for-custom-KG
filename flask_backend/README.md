@@ -11,7 +11,7 @@ pip install -r requirements.txt
 
 
 # To start Bert as a Service:
-  1. pip install tensorflow=1.13
+  1. pip install tensorflow=1.14
   2. pip install -U bert-serving-server bert-serving-client
   3. Download a Pre-trained BERT Model : https://bert-as-service.readthedocs.io/en/latest/section/get-start.html. eg : BERT-Base, Uncased
   4. To start BERT as a service, run the following command in the terminal :
