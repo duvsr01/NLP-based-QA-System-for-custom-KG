@@ -20,6 +20,7 @@ sys.path.append(path)
 from backend.app.dbpedia.main import quepy_main
 
 
+
 filename = 'flask_backend/finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 
@@ -35,7 +36,45 @@ prop_phrase_matcher = PhraseMatcher(nlp.vocab)
 
 app = Flask(__name__)
 CORS(app)  # Let the api access for frontends.
+rich_entity = []
+
 preComputedSentenceEmbeddings()
+
+
+def get_rich_entity():
+
+    if rich_entity:
+        return rich_entity
+
+    print("Retrieveing rick entities set")
+    result_dict = {}
+    json_arr = []
+    query = """
+             SELECT ?name ?type 
+             WHERE {
+                ?subject <http://www.w3.org/2001/ama/sjsu#name> ?name .
+                ?subject <http://www.w3.org/2001/ama/sjsu#type> ?type
+            }
+            """
+    percent_encoded_sparql = quote(query, safe='')
+
+    url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
+    response = requests.post(url)
+    # print(response.json())
+    # return json.dumps(response.json())
+
+    if "results" in response.json():
+        bindings = response.json()["results"]["bindings"]
+        for binding in bindings:
+            # print(binding)
+            result_dict["name"] = binding["name"]["value"]
+            result_dict["tag"] = binding["type"]["value"]
+            # print(result_dict)
+            json_arr.append(result_dict.copy())
+
+        return json_arr
+    else:
+        return []
 
 def get_entity_names(url):
     query = """
@@ -87,6 +126,7 @@ def get_entity_properties():
         return []
 
 
+rich_entity = get_rich_entity()
 entity_names_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#name>")
 entity_types_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#type>")
 alias_names_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#hasAlias>")
@@ -117,6 +157,11 @@ def home():
         data = "hello world"
         return jsonify({'data': data})
 
+@app.route('/richentity', methods=['GET'])
+def richEntity():
+    if (request.method == 'GET'):
+        data = get_rich_entity()
+        return jsonify({'data': data})
 
 # post request accepts a query argument value
 # return status string
