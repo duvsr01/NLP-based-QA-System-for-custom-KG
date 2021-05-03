@@ -12,15 +12,7 @@ import re
 import pickle
 from googletrans import Translator
 
-from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
-import os, sys
-path = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
-print(path)
-sys.path.append(path)
-from backend.app.dbpedia.main import quepy_main
-
-
-filename = 'flask_backend/finalized_model.sav'
+filename = 'finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
@@ -35,7 +27,7 @@ prop_phrase_matcher = PhraseMatcher(nlp.vocab)
 
 app = Flask(__name__)
 CORS(app)  # Let the api access for frontends.
-preComputedSentenceEmbeddings()
+
 
 def get_entity_names(url):
     query = """
@@ -128,41 +120,10 @@ def process():
         print("data", data)
 
         question = data['question']
-        version = data['version'] if 'version' in data else 3
+        version = data['question'] if 'version' in data else 3
 
         print("question", question)
-        answer = process(question, version)
-        print("answer->", answer)
-        if version < 3:
-            return answer
-        if not answer:
-            return fail_safe(question)
 
-        return answer
-
-    except Exception as e:
-        print(e)
-        return "Error occurred!!" + e
-
-
-def fail_safe(question):
-    entity_set = []
-    langCode = "en"
-    try:
-        answer = quepy_main(question)
-        print("Quepy Regex Result:",answer)
-        if answer is None:
-            new_question = bertMatchinQuestion(question)
-            return process(new_question, 3)
-        else:
-            return answer
-
-    except Exception as e:
-        print(e)
-        return "Error occurred!!" + e
-
-def process(question, version):
-    try:
         predicted_intents = loaded_model.predict([question])
 
         print("predicted_intents", predicted_intents)
@@ -282,12 +243,12 @@ def process(question, version):
                 for binding in bindings:
                     return binding["answer"]["value"]
                     break
-            # find most similar question based on bert emebeddings
-            return ''
+
+            return getQueryResults(entity_set, langCode)
         elif len(entity_set) == 1 and len(property_set) != 1:
-            return ''
+            return getQueryResults(entity_set, langCode)
         else:
-            return ''
+            return getQueryResults(entity_set, langCode)
 
     except Exception as e:
         print(e)
@@ -320,6 +281,7 @@ def answer_aggregation_question(entity_set, property_set, question):
         final_ans = one_entity(type_set)
         ans_str = str(len(final_ans)) + " " + type_set[0] + " - " + ", ".join(final_ans)
         print("ans_str", ans_str)
+
         return ans_str
 
 

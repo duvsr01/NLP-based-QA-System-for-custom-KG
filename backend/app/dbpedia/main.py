@@ -24,7 +24,9 @@ from backend.app.quepy.quepyapp import QuepyApp
 sparql = SPARQLWrapper("http://localhost:3030/ama/sparql")
 # sparql = SPARQLWrapper("http://dbpedia.org/sparql")
 dbpedia = quepy.install("backend.app.dbpedia.dbpedia")
-
+import requests
+from urllib.parse import quote
+import json
 # quepy.set_loglevel("DEBUG")
 
 
@@ -145,13 +147,6 @@ def wikipedia2dbpedia(wikipedia_url):
     else:
         return results["results"]["bindings"][0]["url"]["value"]
 
-def quepy_main2(question):
-    words = dbpedia.getTagger(question)
-    print("found words")
-    print(words)
-    QuepyApp.get_query(question)
-
-
 
 def quepy_main(question_nlp):
     default_questions = [
@@ -203,7 +198,6 @@ def quepy_main(question_nlp):
         print("-" * len(question))
 
         target, query, metadata = dbpedia.get_query(question)
-        query = query.replace("@en", "")
         print("target")
         print(target)
         print(query)
@@ -225,18 +219,29 @@ def quepy_main(question_nlp):
         if target.startswith("?"):
             target = target[1:]
         if query:
-            sparql.setQuery(query)
-            sparql.setReturnFormat(JSON)
-            results = sparql.query()
-            print(results)
+            query = query.replace("@en", "")
+            percent_encoded_sparql = quote(query, safe='')
 
-            if not results["results"]["bindings"]:
-                str_return = "No answer found :("
-                continue
+            url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
+            response = requests.post(url)
+            result = json.loads(json.dumps(response.json()))
+            print("result", result)
+            # result = json.dumps(response.json())
 
-        return print_handlers[query_type](results, target, metadata)
+            ans = []
+            if "results" in result:
+                bindings = result["results"]["bindings"]
+                for binding in bindings:
+                    for entname in result["head"]["vars"]:
+                        print("entname is", entname)
+                        ans.append(binding[entname]["value"])
+
+            print("answer is ", ans)
+            ans_str = str(len(ans)) + " - " + ", ".join(ans)
+            print("ans_str", ans_str)
+
+            return ans_str
 
 
-
-if __name__ == '__main__':
-    quepy_main("What time is it in India?")
+# if __name__ == '__main__':
+#     quepy_main("What time is it in India?")

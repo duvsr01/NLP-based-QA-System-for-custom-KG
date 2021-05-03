@@ -16,7 +16,7 @@ from backend.app.quepy.dsl import HasKeyword
 from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
 from .dsl import IsMovie, NameOf, IsPerson, \
     DirectedBy, LabelOf, DurationOf, HasActor, HasName, ReleaseDateOf, \
-    DirectorOf, StarsIn, DefinitionOf
+    DirectorOf, StarsIn, DefinitionOf, Teach, TaughtBy
 
 nouns = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
 
@@ -44,6 +44,11 @@ class Director(Particle):
         name = match.words.tokens
         return IsPerson() + HasKeyword(name)
 
+class Professor(Particle):
+    regex = nouns
+    def interpret(self, match):
+        name = match.words.tokens
+        return HasKeyword(name)
 
 class ListMoviesQuestion(QuestionTemplate):
     """
@@ -63,16 +68,21 @@ class MoviesByDirectorQuestion(QuestionTemplate):
     Ex: "List movies directed by Quentin Tarantino.
         "movies directed by Martin Scorsese"
         "which movies did Mel Gibson directed"
+        "which courses did Dan Harkey Teach"
     """
 
     regex = (Question(Lemma("list")) + (Lemma("movie") | Lemma("film")) +
              Question(Lemma("direct")) + Lemma("by") + Director()) | \
             (Lemma("which") + (Lemma("movie") | Lemma("film")) + Lemma("do") +
-             Director() + Lemma("direct") + Question(Pos(".")))
+             Director() + Lemma("direct") + Question(Pos(".")))| \
+            (Lemma("which") + (Lemma("courses") | Lemma("course")) + Lemma("do") +
+             Professor() + Lemma("teach") + Question(Pos(".")))
 
     def interpret(self, match):
-        movie = IsMovie() + DirectedBy(match.director)
-        movie_name = LabelOf(movie)
+        print(match)
+        m= Teach(match.professor)
+        movie = TaughtBy(m)
+        movie_name = movie
 
         return movie_name, "enum"
 
