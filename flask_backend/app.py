@@ -15,6 +15,16 @@ from suggestions import removePunctuations, chooseWords
 from searchSuggestions import suggestions, showSuggestions
 
 
+from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
+import os, sys
+path = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+print(path)
+sys.path.append(path)
+from backend.app.dbpedia.main import quepy_main
+
+filename = 'flask_backend/finalized_model.sav'
+loaded_model = pickle.load(open(filename, 'rb'))
+
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 dictionary_path = pkg_resources.resource_filename(
     "symspellpy", "frequency_dictionary_en_82_765.txt")
@@ -368,7 +378,6 @@ def searchSuggestion_process():
     except Exception as e:
         print(e)
         return "Error occurred!!" + e
-
 
 
 # driver function
