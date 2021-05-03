@@ -30,7 +30,7 @@
 }
 .AutoCompleteText li{
     list-style-type: none;
-    padding: 10px 5px;
+    padding: 5px 3px;
     box-shadow: 0 0 0;
     cursor:pointer;
     text-align: left;
@@ -41,5 +41,5 @@
 
 .AutoCompleteText li:hover{
     text-decoration:underline;
-    background-color: rgba(221, 201, 201, 0.979);
+    background-color: rgba(220,220,220, 0.979);
 }
