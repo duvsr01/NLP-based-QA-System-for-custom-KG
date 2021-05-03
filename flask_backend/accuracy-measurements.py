@@ -34,23 +34,38 @@ questions = [
         "question": "What is the deadline to pay Fall 2021 Tuition Fee?",
         "langCode": "en",
         "answer": "Per unit tuition fees is $1200 and deadline to pay the fees is August 10, 2021"
+    },
+    {
+        "question": "How many course are in SJSU?",
+        "langCode": "en",
+        "answer": "4 course - GWAR, Software Systems Engineering, Introduction to Programming, Basics of ML"
+    },
+    {
+        "question": "How many course are taught by Dan Harkey?",
+        "langCode": "en",
+        "answer": "3 course - GWAR, Introduction to Programming, Basics of ML"
+    },
+    {
+        "question": "How to reach the Student Health Center?",
+        "langCode": "en",
+        "answer": "408-924-6122"
+    },
+    {
+        "question": "What is the contact number of admissions office?",
+        "langCode": "en",
+        "answer": "408-283-7500"
+    },
+    {
+        "question": "How much is the application fees for graduate school?",
+        "langCode": "en",
+        "answer": "$70"
     }
-
-
 ]
 
 
 def get_answer(question):
     response = requests.post(URL, json=question)
     return response.text
-    #print(response.json())
-
-    # if "results" in response.json():
-    #     bindings = response.json()["results"]["bindings"]
-    #     for binding in bindings:
-    #         return binding["answer"]["value"]
-    # else:
-    #     return "No results"
 
 
 if __name__ == '__main__':
@@ -88,4 +103,5 @@ if __name__ == '__main__':
         print("precision", precision)
         print("recall", recall)
         print("f_measure", f_measure)
+        print("\n----------------------------------------------------------\n")
 

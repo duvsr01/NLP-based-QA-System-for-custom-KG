@@ -25,7 +25,6 @@ class PopulatedPlace(Particle):
         name = match.words.tokens.title()
         return IsPopulatedPlace() + HasKeyword(name)
 
-
 class CapitalOfQuestion(QuestionTemplate):
     """
     Regex for questions about the capital of a country.
@@ -38,7 +37,11 @@ class CapitalOfQuestion(QuestionTemplate):
 
     def interpret(self, match):
         capital = CapitalOf(match.populatedplace)
+        print("capital")
+        print(capital)
         label = LabelOf(capital)
+        print("label")
+        print(label)
         return label, "enum"
 
 

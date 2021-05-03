@@ -5,15 +5,15 @@ import requests
 from urllib.parse import quote
 import json
 import pkg_resources
-import pickle
 from symspellpy import SymSpell, Verbosity
 from difflib import get_close_matches
 from spacy.matcher import PhraseMatcher
 import re
+import pickle
 from googletrans import Translator
-from suggestions import removePunctuations, chooseWords
-from searchSuggestions import suggestions, showSuggestions
 
+filename = 'finalized_model.sav'
+loaded_model = pickle.load(open(filename, 'rb'))
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 dictionary_path = pkg_resources.resource_filename(
@@ -31,7 +31,7 @@ CORS(app)  # Let the api access for frontends.
 
 def get_entity_names(url):
     query = """
-                SELECT ?res 
+                SELECT DISTINCT ?res 
                 WHERE {
                   ?entity %s ?res .
                 }
@@ -40,7 +40,7 @@ def get_entity_names(url):
 
     url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
     response = requests.post(url)
-    print(response.json())
+
     # return json.dumps(response.json())
 
     if "results" in response.json():
@@ -61,7 +61,7 @@ def get_entity_properties():
 
     url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
     response = requests.post(url)
-    print(response.json())
+
     # return json.dumps(response.json())
 
     if "results" in response.json():
@@ -71,10 +71,8 @@ def get_entity_properties():
             match = re.search(r'http://www.w3.org/2001/ama/sjsu#?([^\']+)', binding["predicate"]["value"])
             # ans.append(binding["predicate"]["value"].split("#")[1])
             if match:
-                print(match.group(1))
                 ans.append(match.group(1))
 
-        print(ans)
         return ans
         # return [binding["res"]["value"] for binding in bindings]
     else:
@@ -82,17 +80,24 @@ def get_entity_properties():
 
 
 entity_names_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#name>")
+entity_types_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#type>")
 alias_names_arr = get_entity_names("<http://www.w3.org/2001/ama/sjsu#hasAlias>")
+
 entity_names = set(entity_names_arr)
 # phrases = ['machine learning', 'robots', 'intelligent agents']
 phrases = entity_names_arr
 patterns = [nlp(text) for text in phrases]
-phrase_matcher.add('AI', None, *patterns)
+phrase_matcher.add('entity_name', None, *patterns)
+
 entity_properties = get_entity_properties()
 entity_properties.extend(alias_names_arr)
 print("entity_properties", entity_properties)
 prop_patterns = [nlp(text) for text in entity_properties]
-prop_phrase_matcher.add('property', None, *prop_patterns)
+prop_phrase_matcher.add('entity_property', None, *prop_patterns)
+
+print("entity_types_arr", entity_types_arr)
+patterns = [nlp(text) for text in entity_types_arr]
+phrase_matcher.add('entity_type', None, *patterns)
 
 
 # on the terminal type: flask run or curl http://127.0.0.1:5000/
@@ -115,21 +120,34 @@ def process():
         print("data", data)
 
         question = data['question']
+        version = data['question'] if 'version' in data else 3
+
         print("question", question)
 
-        version = 3
+        predicted_intents = loaded_model.predict([question])
+
+        print("predicted_intents", predicted_intents)
+
         langCode = "en"
-        
         doc = nlp(question)
         entity_set = []
         property_set = []
+
+        tokens = []
+        for token in doc:
+            tokens.append(token.lemma_)
+
+        question = " ".join(tokens)
+        print("question after lemmatization", question)
+        doc = nlp(question)
 
         matched_phrases = phrase_matcher(doc)
         for match_id, start, end in matched_phrases:
             string_id = nlp.vocab.strings[match_id]
             span = doc[start:end]
             print(match_id, string_id, start, end, span.text)
-            entity_set.append(span.text)
+            if string_id == "entity_name":
+                entity_set.append(span.text)
 
         if version >= 2:
             print("version", version)
@@ -160,7 +178,8 @@ def process():
             string_id = nlp.vocab.strings[match_id]
             span = doc[start:end]
             print(match_id, string_id, start, end, span.text)
-            property_set.append(span.text)
+            if string_id == "entity_property":
+                property_set.append(span.text)
 
         entities = doc.ents
         print("** property_set", property_set)
@@ -209,7 +228,12 @@ def process():
         if len(property_set) > 1:
             property_set = property_set[:1]
 
-        if (len(entity_set) == 1) and (len(property_set) == 1):
+        print("entity_set", entity_set)
+        print("property_set", property_set)
+
+        if predicted_intents[0] == "aggregation_question":
+            return answer_aggregation_question(entity_set, property_set, question)
+        elif (len(entity_set) == 1) and (len(property_set) == 1):
             result_obj = one_entity_one_predicate(entity_set, property_set, langCode)
             print("result_obj", result_obj)
             result = json.loads(result_obj)
@@ -231,21 +255,119 @@ def process():
         return "Error occurred!!" + e
 
 
+def answer_aggregation_question(entity_set, property_set, question):
+    print("In answer_aggregation_question")
+    doc = nlp(question)
+    type_set = []
+
+    matched_type_phrases = phrase_matcher(doc)
+    for match_id, start, end in matched_type_phrases:
+        string_id = nlp.vocab.strings[match_id]
+        span = doc[start:end]
+        print(match_id, string_id, start, end, span.text)
+        if string_id == "entity_type":
+            type_set.append(span.text)
+
+    if (len(entity_set) == 1) and (len(type_set) == 1):
+        print("In one_entity_one_type")
+        final_ans = one_entity_one_type(entity_set, type_set)
+        ans_str = str(len(final_ans)) + " " + type_set[0] + " - " + ", ".join(final_ans)
+        print("ans_str", ans_str)
+
+        return ans_str
+
+    if len(type_set) == 1:
+        print("In one_entity")
+        final_ans = one_entity(type_set)
+        ans_str = str(len(final_ans)) + " " + type_set[0] + " - " + ", ".join(final_ans)
+        print("ans_str", ans_str)
+
+        return ans_str
+
+
+def one_entity_one_type(entity_set, type_set):
+    print("entity", entity_set[0])
+    entity = entity_set[0]
+    print("type", type_set[0])
+    typ = type_set[0]
+
+    query = """
+        SELECT DISTINCT ?entName
+        WHERE {
+          {
+            ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
+            ?ent <http://www.w3.org/2001/ama/sjsu#type> "%s" .
+            ?ent <http://www.w3.org/2001/ama/sjsu#name> ?entName .
+            ?subject ?rel ?ent .
+          } 
+          UNION 
+          {
+            ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
+            ?ent <http://www.w3.org/2001/ama/sjsu#type> "%s" .
+            ?ent <http://www.w3.org/2001/ama/sjsu#name> ?entName .
+            ?ent ?rel ?subject .
+          }
+          FILTER(strlen(?entName)>0)
+        }
+    """ % (entity, typ, entity, typ)
+
+    percent_encoded_sparql = quote(query, safe='')
+
+    url = 'http://localhost:3030/ama/sparql?query=%s' % percent_encoded_sparql
+    response = requests.post(url)
+    print("response", response)
+    # print(response.json())
+    # return json.dumps(response.json())
+    result = json.loads(json.dumps(response.json()))
+
+    ans = []
+    if "results" in result:
+        bindings = result["results"]["bindings"]
+        for binding in bindings:
+            ans.append(binding["entName"]["value"])
+
+    print("ans", ans)
+    return ans
+
+
+def one_entity(type_set):
+    print("type", type_set[0])
+    typ = type_set[0]
+
+    query = """
+        SELECT DISTINCT ?entName
+        WHERE
+          {
+            ?ent <http://www.w3.org/2001/ama/sjsu#type> "%s" .
+            ?ent <http://www.w3.org/2001/ama/sjsu#name> ?entName .
+          } 
+        """ % typ
+
+    percent_encoded_sparql = quote(query, safe='')
+    url = 'http://localhost:3030/ama/sparql?query=%s' % percent_encoded_sparql
+    response = requests.post(url)
+    print(response.json())
+    # return json.dumps(response.json())
+    #result = response.json()
+    # result = json.loads(response.json())
+    result = json.loads(json.dumps(response.json()))
+    print("result", result)
+    #result = json.dumps(response.json())
+
+    ans = []
+    if "results" in result:
+        bindings = result["results"]["bindings"]
+        for binding in bindings:
+            ans.append(binding["entName"]["value"])
+
+    return ans
+
+
 def one_entity_one_predicate(entitySet, property_set, langCode):
-    data = {'entities': []}
     print("entity", entitySet[0])
     entity = entitySet[0]
     print("property", property_set[0])
     noun = property_set[0]
-
-    # query = """
-    #     SELECT ?answer
-    #     WHERE {
-    #
-    #       ?subject <http://www.w3.org/2001/ama/sjsu#name> "%s" .
-    #       ?subject <http://www.w3.org/2001/ama/sjsu#%s>|<http://www.w3.org/2001/ama/sjsu#hasAlias> ?answer
-    #     }
-    #     """ % (entity, noun)
 
     query = """
     SELECT DISTINCT ?answer
@@ -268,12 +390,13 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
       }
       FILTER(strlen(?answer)>0)
     }
-    """% (entity, noun, entity, noun)
+    """ % (entity, noun.replace(" ", ""), entity, noun)
 
+    print(query)
     percent_encoded_sparql = quote(query, safe='')
 
     url = 'http://localhost:3030/ama/sparql?query=%s' % (percent_encoded_sparql)
-    response = requests.post(url, data=data)
+    response = requests.post(url)
     print(response.json())
     return json.dumps(response.json())
 
@@ -283,95 +406,7 @@ def getQueryResults(entitySet, langCode):
     return json.dumps(data)
 
 
-# post request accepts a string 
-# returns list of sentence suggestions
-@app.route('/suggestions', methods=['POST'])
-def suggestion_process():
-    error = ''
-    try:
-        data = request.json
-        print("data", data)
-        question = data['question']
-
-        if(not (question and not question.isspace())):
-            return ('', 204)
-
-       # Text Pre-Processing on the sentence typed
-        sen = removePunctuations(question)
-        temp = sen.split()
-        if len(temp) < 3:
-            print("Please enter atleast 3 words !")
-        else:
-            temp = temp[-3:]
-        sen = " ".join(temp)
-
-        print("processed text: ",sen)
-        
-        ### PREDICTION
-        # choose most probable words for prediction
-        # load the pre-computed probability dictionaries from pickle files
-        with open('./pickle/bi_prob_dict.pickle', 'rb') as bi_prob:
-                bi_prob_dict = pickle.load(bi_prob)
-
-        with open('./pickle/tri_prob_dict.pickle', 'rb') as tri_prob:
-                tri_prob_dict = pickle.load(tri_prob)
-
-        with open('./pickle/quad_prob_dict.pickle', 'rb') as quad_prob:
-                quad_prob_dict = pickle.load(quad_prob)
-
-        word_choice = chooseWords(sen,bi_prob_dict,tri_prob_dict,quad_prob_dict)
-        
-        print("word_choices are: ",word_choice)
-        
-        result = set()
-        for word in word_choice:
-            key = sen + ' ' + word[1]
-            result.add(key)
-
-        def convert_to_list(obj):
-            if isinstance(obj, set):
-                return list(obj)
-            raise TypeError
-
-        response = json.dumps(result, default=convert_to_list)  
-        print(response)
-
-        return response
-
-    except Exception as e:
-        print(e)
-        return "Error occurred!!" + e
-
-# search suggestions - approach 2
-# post request accepts a string input
-# returns list of sentence suggestions
-@app.route('/searchSuggestions', methods=['POST'])
-def searchSuggestion_process():
-    error = ''
-    try:
-        data = request.json
-        print("data", data)
-        question = data['question']
-
-        if(not (question and not question.isspace())):
-            return ('', 204)
-
-        result = suggestions.search(question.lower(), max_suggestions=10)
-        displaySuggestions = showSuggestions(result)
-
-        # for obj in displaySuggestions:
-        #     print(obj.suggestion)
-        #     print(obj.tag)
-    
-        return json.dumps(displaySuggestions,default=lambda o: o.__dict__)
-
-    except Exception as e:
-        print(e)
-        return "Error occurred!!" + e
-
-
-
 # driver function
 if __name__ == '__main__':
     app.run(debug=False)
-    # app.run(host='0.0.0.0', port = 5001)
+    # app.run(host='0.0.0.0', port = 5000)

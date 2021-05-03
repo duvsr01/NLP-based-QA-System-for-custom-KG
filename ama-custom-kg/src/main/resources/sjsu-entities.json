@@ -1,23 +1,49 @@
 {
   "personel": [
     {"sjsuId": "p1", "firstName": "Dan", "lastName": "Harkey", "name":  "Dan Harkey",
-      "email": "dan.harkey@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1"},
+      "email": "dan.harkey@sjsu.edu", "type": "faculty", "department_sjsuId": "d1", "course_sjsuId": ["c1", "c3", "c4"]},
     {"sjsuId": "p2", "firstName": "Gopinath", "lastName": "Vinodh", "name":  "Vinodh Gopinath",
-      "email": "vinodh.gopinath@sjsu.edu", "type": "Faculty", "department_sjsuId": "d1"},
+      "email": "vinodh.gopinath@sjsu.edu", "type": "faculty", "department_sjsuId": "d1", "course_sjsuId": "c2"},
     {"sjsuId": "p3", "firstName": "Cristina", "lastName": "Velarde", "name":  "Cristina Velarde",
-      "email": "cristina.velarde@sjsu.edu", "type": "Evaluator", "department_sjsuId": "d2"}],
+      "email": "cristina.velarde@sjsu.edu", "type": "evaluator", "department_sjsuId": "d2"}],
 
   "department": [
-    {"sjsuId": "d1", "name": "CMPE", "type": "Department"},
-    {"sjsuId": "d2", "name": "CS", "type": "Department"},
-    {"sjsuId": "d3", "name": "GAPE", "type": "Department"}
+    {"sjsuId": "d1", "name": "CMPE", "type": "department"},
+    {"sjsuId": "d2", "name": "CS", "type": "department"},
+    {"sjsuId": "d3", "name": "GAPE", "type": "department"},
+    {"sjsuId": "d4", "name": "Student Health Center", "contact_number": "408-924-6122", "type": "department"},
+    {"sjsuId": "d5", "name": "Admissions Office", "contact_number": "408-283-7500", "type": "department"},
+    {"sjsuId": "d6", "name": "Graduate school", "application_fees": "$70", "type": "department"}
+  ],
+
+  "service": [
+    {"sjsuId": "service1", "name": "Parking service", "type": "service", "info":  "Download app -  ParkMobile app"},
+    {"sjsuId": "service2", "name": "CS", "central machine shop": "department", "info":  "Engineering rooms - 184, 186, 188, and 190"},
+    {"sjsuId": "service3", "name": "ETS code", "type": "service", "info":  "TOEFL and GRE (ETS Code) is 4687"}
+  ],
+
+  "major": [
+    {"sjsuId": "m1", "name": "interdisciplinary studies ", "type": "major", "email":  "Jeff Honda (jeffery.honda@sjsu.edu)",
+      "criteria": "Minimum GPA of 3.0 or B grade in the last 60 semester units of post-secondary academic work for admission to the Graduate Division."}
+    ],
+
+  "scholarship": [
+    {"sjsuId": "s1", "name": "Graduate Student Virtual Travel Award", "type": "scholarship", "studentLevel":  "graduate"},
+    {"sjsuId": "s2", "name": "Bertha Kalm Scholarship", "type": "scholarship", "studentLevel":  "graduate"},
+    {"sjsuId": "s3", "name": "Graduate Equity Fellowships", "type": "scholarship", "studentLevel":  "graduate"},
+    {"sjsuId": "s4", "name": "AANP Scholarship", "type": "scholarship", "studentLevel":  "graduate", "school":  "nursing"},
+    {"sjsuId": "s5", "name": "AORN Foundation Academic Scholarship", "type": "scholarship", "studentLevel":  "graduate", "school":  "nursing"},
+    {"sjsuId": "s6", "name": "KCNPNM Scholarship", "type": "scholarship", "studentLevel":  "graduate", "school":  "nursing"}
   ],
 
   "course": [
     {"sjsuId": "c1", "number": "198", "name": "Introduction to Programming", "department_sjsuId": "d2", "type": "course"},
     {"sjsuId": "c2", "number": "202","name": "Software Systems Engineering", "department_sjsuId": "d1", "type": "course"},
     {"sjsuId": "c3", "number": "212","name": "Basics of ML",
-      "field": "machine learning", "department_sjsuId": "d1", "type": "course"}
+      "field": "machine learning", "department_sjsuId": "d1", "type": "course"},
+    {"sjsuId": "c4", "number": "298", "name": "GWAR", "department_sjsuId": "d1", "type": "course",
+      "pre_requisites": "Should have completed all MSSE core courses as well as 295A. GWAR can also be taken concurrently with 295A."
+    }
   ],
 
   "semester": [

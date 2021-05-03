@@ -43,7 +43,6 @@ class WhatIs(QuestionTemplate):
 
     def interpret(self, match):
         label = DefinitionOf(match.thing)
-
         return label, "define"
 
 

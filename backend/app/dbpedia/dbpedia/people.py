@@ -13,8 +13,8 @@ People related regex
 
 from refo import Plus, Question
 from backend.app.quepy.dsl import HasKeyword
-from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle
-from .dsl import IsPerson, LabelOf, DefinitionOf, BirthDateOf, BirthPlaceOf, DaughterOf, NameOf
+from backend.app.quepy.parsing import Lemma, Lemmas, Pos, QuestionTemplate, Particle, Token
+from .dsl import IsPerson, LabelOf, DefinitionOf, BirthDateOf, BirthPlaceOf, DaughterOf, NameOf, EmailOf, ProfessorOf, Fees, PreReq
 
 
 class Person(Particle):
@@ -22,8 +22,29 @@ class Person(Particle):
 
     def interpret(self, match):
         name = match.words.tokens
-        return IsPerson() + HasKeyword(name)
+        return HasKeyword(name)
 
+
+class TutionFees(Particle):
+    regex = Pos("NN") + Pos("NNS")
+
+    def interpret(self, match):
+        name = match.words.tokens
+        return HasKeyword(name)
+
+class CollegeYear(Particle):
+    regex = Pos("NN") + Pos("CD")
+
+    def interpret(self, match):
+        name = match.words.tokens
+        return HasKeyword(name)
+
+class CourseName(Particle):
+    regex = Pos("NNP")
+
+    def interpret(self, match):
+        name = match.words.tokens
+        return HasKeyword(name)
 
 class WhoIs(QuestionTemplate):
     """
@@ -31,12 +52,29 @@ class WhoIs(QuestionTemplate):
     """
 
     regex = Lemma("who") + Lemma("be") + Person() + \
-        Question(Pos("."))
+            Question(Pos("."))
 
     def interpret(self, match):
         definition = DefinitionOf(match.person)
         return definition, "define"
 
+class EmailOfQuestion(QuestionTemplate):
+    """
+    Regex for questions about the capital of a country.
+    Ex: "What is the email of Dan Harkey?"
+    """
+
+    opening = Lemma("what") + Token("is")
+    professor = Pos("DT") | Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS")
+    regex = opening + Pos("DT") + Lemma("email") + Pos("IN") + \
+        Question(Pos("DT")) +  Person() +  Question(Pos("."))
+
+    def interpret(self, match):
+        # email = ProfessorOf(match.person) + EmailOf(match.person)
+        email = EmailOf(match.person)
+        print("rdf :")
+        print(email)
+        return  email, "enum"
 
 class HowOldIsQuestion(QuestionTemplate):
     """
@@ -44,7 +82,7 @@ class HowOldIsQuestion(QuestionTemplate):
     """
 
     regex = Pos("WRB") + Lemma("old") + Lemma("be") + Person() + \
-        Question(Pos("."))
+            Question(Pos("."))
 
     def interpret(self, match):
         birth_date = BirthDateOf(match.person)
@@ -57,7 +95,7 @@ class WhereIsFromQuestion(QuestionTemplate):
     """
 
     regex = Lemmas("where be") + Person() + Lemma("from") + \
-        Question(Pos("."))
+            Question(Pos("."))
 
     def interpret(self, match):
         birth_place = BirthPlaceOf(match.person)
@@ -74,9 +112,45 @@ class DaughterOfQuestion(QuestionTemplate):
 
     regex = ((Lemmas("who be") + Pos("DT")) | (Lemmas("who") + Question(Lemma("be") + Pos("DT")))) + \
             (Lemma("daughter") | Lemma("child") | Lemma("children") | Lemma("son")) + \
-        Pos("IN") + Person() + Question(Pos("."))
+            Pos("IN") + Person() + Question(Pos("."))
 
     def interpret(self, match):
         daughter = IsPerson() + DaughterOf(match.person)
         father_name = NameOf(daughter)
         return father_name, "literal"
+
+
+class CollegeQuestionFees(QuestionTemplate):
+    """
+    Ex: "What is the tuition fees of spring 2020"
+        "How much is the tution fees of Fall 2021"
+    """
+
+    regex = (Lemmas("what be") + Pos("DT") + TutionFees() + Pos("IN") + CollegeYear()) | \
+            (Pos("WRB") + Lemma("much") + Lemma("be") +  Pos("DT") + TutionFees() + Pos("IN") + CollegeYear())
+
+    def interpret(self, match):
+        print(match)
+        m = Fees(match.collegeyear)
+
+        return m, "literal"
+
+        #return movie_name, "enum"
+
+class CollegeQuestionPrereq(QuestionTemplate):
+    """
+    Ex: "What are the pre requisites of GWAR"
+        "What is the pre requisites for GWAR"
+        "What are the pre requisites of GWAR"
+        "What is the prereq of GWAR"
+        "does GWAR have/has any prereq"
+    """
+
+    regex = (Lemmas("what be") + Pos("DT") + (Pos("NNS") | Pos("NN") | (Pos("NN") + Pos("VBZ")))  + Pos("IN") + CourseName()) | \
+            (Lemma("does") + CourseName() + (Pos("VB") | Pos("VBZ")) + Pos("DT") + (Pos("NNS") | Pos("NN") | (Pos("NN") + Pos("VBZ"))))
+
+    def interpret(self, match):
+        print(match)
+        m = PreReq(match.coursename)
+
+        return m, "literal"

@@ -121,12 +121,14 @@ class QuepyApp(object):
         weight order.
         """
         question = encoding_flexible_conversion(question)
+        print("encoding_flexible_conversion")
+        print(question)
         for expression, userdata in self._iter_compiled_forms(question):
             print(expression, userdata)
             target, query = generation.get_code(expression, self.language)
             print("target is %s and query is %s" % (target, query))
             message = u"Interpretation {1}: {0}"
-            logger.debug(message.format(str(expression),
+            print(message.format(str(expression),
                          expression.rule_used))
             logger.debug(u"Query generated: {0}".format(query))
             yield target, query, userdata
@@ -138,16 +140,16 @@ class QuepyApp(object):
 
         try:
             words = list(self.tagger(question))
-            print(words)
-            #print("words are %s" % words)
+            # print(words)
+            print("words are %s" % words)
         except TaggingError:
             logger.warning(u"Can't parse tagger's output for: '%s'",
                            question)
             return
 
-        logger.debug(u"Tagged question:\n" +
-                     u"\n".join(u"\t{}".format(w for w in words)))
-        print("rules %s" % self.rules)
+        # print(u"Tagged question:\n" +
+        #              u"\n".join(u"\t{}".format(w for w in words)))
+        # print("rules %s" % self.rules)
         for rule in self.rules:
             expression, userdata = rule.get_interpretation(words)
             print("expression %s userdate %s" % (expression, userdata))
