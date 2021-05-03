@@ -198,7 +198,17 @@ def fail_safe(question):
         print("Quepy Regex Result:",answer)
         if answer is None:
             new_question = bertMatchinQuestion(question)
-            return process(new_question, 3)
+            output = process(new_question, 3)
+            result_dict = {}
+            if output:
+                print("*** output ****")
+                print(output)
+                result_dict["output"] = output
+                result_dict["question"] = new_question
+                print(result_dict)
+                return jsonify(result_dict)
+            else:
+                return output
         else:
             return answer
 
