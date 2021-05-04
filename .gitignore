@@ -9,3 +9,7 @@
 # Maven
 log/
 target/
+
+#virtual environment
+venv/
+env_vir/

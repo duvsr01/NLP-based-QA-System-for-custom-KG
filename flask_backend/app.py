@@ -11,6 +11,8 @@ from spacy.matcher import PhraseMatcher
 import re
 import pickle
 from googletrans import Translator
+from suggestions import removePunctuations, chooseWords
+from searchSuggestions import suggestions, showSuggestions
 
 from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
 import os, sys
@@ -18,8 +20,6 @@ path = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
 print(path)
 sys.path.append(path)
 from backend.app.dbpedia.main import quepy_main
-
-
 
 filename = 'flask_backend/finalized_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
@@ -37,6 +37,9 @@ prop_phrase_matcher = PhraseMatcher(nlp.vocab)
 app = Flask(__name__)
 CORS(app)  # Let the api access for frontends.
 rich_entity = []
+result_dict={}
+
+
 
 preComputedSentenceEmbeddings()
 
@@ -171,7 +174,8 @@ def process():
     try:
         data = request.json
         print("data", data)
-
+        result_dict["answer"] = ""
+        result_dict["question"] = ""
         question = data['question']
         version = data['version'] if 'version' in data else 3
 
@@ -179,11 +183,14 @@ def process():
         answer = process(question, version)
         print("answer->", answer)
         if version < 3:
-            return answer
+            result_dict["answer"]=answer
+            return jsonify(result_dict)
+
         if not answer:
             return fail_safe(question)
 
-        return answer
+        result_dict["answer"]=answer
+        return jsonify(result_dict)
 
     except Exception as e:
         print(e)
@@ -199,18 +206,19 @@ def fail_safe(question):
         if answer is None:
             new_question = bertMatchinQuestion(question)
             output = process(new_question, 3)
-            result_dict = {}
             if output:
                 print("*** output ****")
                 print(output)
-                result_dict["output"] = output
+                result_dict["answer"] = output
                 result_dict["question"] = new_question
                 print(result_dict)
                 return jsonify(result_dict)
             else:
-                return output
+                result_dict["answer"] = output
+                return jsonify(result_dict)
         else:
-            return answer
+            result_dict["answer"] = output
+            return jsonify(result_dict)
 
     except Exception as e:
         print(e)
@@ -497,6 +505,92 @@ def one_entity_one_predicate(entitySet, property_set, langCode):
 def getQueryResults(entitySet, langCode):
     data = {}
     return json.dumps(data)
+
+# post request accepts a string 
+# returns list of sentence suggestions
+@app.route('/suggestions', methods=['POST'])
+def suggestion_process():
+    error = ''
+    try:
+        data = request.json
+        print("data", data)
+        question = data['question']
+
+        if(not (question and not question.isspace())):
+            return ('', 204)
+
+       # Text Pre-Processing on the sentence typed
+        sen = removePunctuations(question)
+        temp = sen.split()
+        if len(temp) < 3:
+            print("Please enter atleast 3 words !")
+        else:
+            temp = temp[-3:]
+        sen = " ".join(temp)
+
+        print("processed text: ",sen)
+        
+        ### PREDICTION
+        # choose most probable words for prediction
+        # load the pre-computed probability dictionaries from pickle files
+        with open('./pickle/bi_prob_dict.pickle', 'rb') as bi_prob:
+                bi_prob_dict = pickle.load(bi_prob)
+
+        with open('./pickle/tri_prob_dict.pickle', 'rb') as tri_prob:
+                tri_prob_dict = pickle.load(tri_prob)
+
+        with open('./pickle/quad_prob_dict.pickle', 'rb') as quad_prob:
+                quad_prob_dict = pickle.load(quad_prob)
+
+        word_choice = chooseWords(sen,bi_prob_dict,tri_prob_dict,quad_prob_dict)
+        
+        print("word_choices are: ",word_choice)
+        
+        result = set()
+        for word in word_choice:
+            key = sen + ' ' + word[1]
+            result.add(key)
+
+        def convert_to_list(obj):
+            if isinstance(obj, set):
+                return list(obj)
+            raise TypeError
+
+        response = json.dumps(result, default=convert_to_list)  
+        print(response)
+
+        return response
+
+    except Exception as e:
+        print(e)
+        return "Error occurred!!" + e
+
+# search suggestions - approach 2
+# post request accepts a string input
+# returns list of sentence suggestions
+@app.route('/searchSuggestions', methods=['POST'])
+def searchSuggestion_process():
+    error = ''
+    try:
+        data = request.json
+        print("data", data)
+        question = data['question']
+
+        if(not (question and not question.isspace())):
+            return ('', 204)
+
+        result = suggestions.search(question.lower(), max_suggestions=10)
+        displaySuggestions = showSuggestions(result)
+
+        # for obj in displaySuggestions:
+        #     print(obj.suggestion)
+        #     print(obj.tag)
+    
+        return json.dumps(displaySuggestions,default=lambda o: o.__dict__)
+
+    except Exception as e:
+        print(e)
+        return "Error occurred!!" + e
 
 
 # driver function
