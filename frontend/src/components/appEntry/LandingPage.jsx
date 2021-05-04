@@ -86,7 +86,8 @@ onKeyUp(event) {
       if(Object.keys(response.data).length !== 0){
       console.log("the bert question:",response.data.question);
       this.setState({
-        answer:response.data
+        answer:response.data.answer,
+        text:response.data.question
       })
       }else{
         this.setState({
@@ -105,7 +106,9 @@ onKeyUp(event) {
   render() {
     let content;
     let displaySuggestions;
-    const {suggestions,text} =  this.state;
+    let helpingQuestion;
+    const {suggestions} =  this.state;
+
 
     if(suggestions.length === 0){
         displaySuggestions= null;
@@ -122,6 +125,14 @@ onKeyUp(event) {
         );
     }
 
+    if(this.state.text){
+      helpingQuestion = 
+        <div>
+        <Card.Text className="text-primary">Did you mean "{this.state.text}"</Card.Text>
+        <Card.Text className="text">If yes, then it is .. </Card.Text>
+        </div>
+    }
+
     if(this.state.answer){
      content =
       <Container>
@@ -130,7 +141,9 @@ onKeyUp(event) {
       </span>
       <Card bg="white" style={{ width: "100%", margin: "0%", height: "250px"}}>
         <Card.Body>
-          <Card.Title>{this.state.answer}</Card.Title>
+          {helpingQuestion}
+       
+          <Card.Text className="text">{this.state.answer}</Card.Text>
         </Card.Body>
       </Card>
       </Container>
