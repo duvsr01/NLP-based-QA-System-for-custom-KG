@@ -198,6 +198,7 @@ def quepy_main(question_nlp):
         print("-" * len(question))
 
         target, query, metadata = dbpedia.get_query(question)
+
         print("target")
         print(target)
         print(query)
@@ -205,6 +206,7 @@ def quepy_main(question_nlp):
 
         if isinstance(metadata, tuple):
             query_type = metadata[0]
+
             metadata = metadata[1]
         else:
             query_type = metadata

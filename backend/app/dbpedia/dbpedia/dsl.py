@@ -96,6 +96,22 @@ class PreReq(FixedRelation):
     relation = "<http://www.w3.org/2001/ama/sjsu#preRequisites>"
     reverse = True
 
+class IsGraduate(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#studentLevel>"
+    reverse = True
+
+class IsSchool(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#school>"
+    reverse = True
+
+class ScholarshipName(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#scholarshipname>"
+    reverse = True
+
+class HasInfo(FixedRelation):
+    relation = "<http://www.w3.org/2001/ama/sjsu#info>"
+    reverse = True
+
 class Teach(FixedRelation):
     relation = "<http://www.w3.org/2001/ama/sjsu#teaches>"
     reverse = True

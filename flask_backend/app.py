@@ -373,10 +373,14 @@ def answer_aggregation_question(entity_set, property_set, question):
     if (len(entity_set) == 1) and (len(type_set) == 1):
         print("In one_entity_one_type")
         final_ans = one_entity_one_type(entity_set, type_set)
-        ans_str = str(len(final_ans)) + " " + type_set[0] + " - " + ", ".join(final_ans)
-        print("ans_str", ans_str)
+        if len(final_ans) != 0:
+            ans_str = str(len(final_ans)) + " " + type_set[0] + " - " + ", ".join(final_ans)
+            print("ans_str", ans_str)
+            return ans_str
+        return ''
 
-        return ans_str
+
+
 
     if len(type_set) == 1:
         print("In one_entity")
@@ -428,6 +432,7 @@ def one_entity_one_type(entity_set, type_set):
             ans.append(binding["entName"]["value"])
 
     print("ans", ans)
+
     return ans
 
 

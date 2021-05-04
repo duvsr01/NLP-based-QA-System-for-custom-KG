@@ -1,11 +1,11 @@
 <http://www.w3.org/2001/ama/sjsu/service2> <http://www.w3.org/2001/ama/sjsu#info> "Engineering rooms - 184, 186, 188, and 190" .
 <http://www.w3.org/2001/ama/sjsu/service2> <http://www.w3.org/2001/ama/sjsu#sjsuId> "service2" .
-<http://www.w3.org/2001/ama/sjsu/service2> <http://www.w3.org/2001/ama/sjsu#name> "CS" .
+<http://www.w3.org/2001/ama/sjsu/service2> <http://www.w3.org/2001/ama/sjsu#name> "central machine" .
 <http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#sjsuId> "s6" .
-<http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#type> "scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#name> "KCNPNM Scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#studentLevel> "graduate" .
-<http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#school> "nursing" .
+<http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#name> "scholarships" .
+<http://www.w3.org/2001/ama/sjsu/s6> <http://www.w3.org/2001/ama/sjsu#school> <http://www.w3.org/2001/ama/sjsu/g4> .
+<http://www.w3.org/2001/ama/sjsu/g4> <http://www.w3.org/2001/ama/sjsu#sjsuId> "g4" .
+<http://www.w3.org/2001/ama/sjsu/g4> <http://www.w3.org/2001/ama/sjsu#scholarshipname> "KCNPNM Scholarship" .
 <http://www.w3.org/2001/ama/sjsu/d3> <http://www.w3.org/2001/ama/sjsu#sjsuId> "d3" .
 <http://www.w3.org/2001/ama/sjsu/d3> <http://www.w3.org/2001/ama/sjsu#type> "department" .
 <http://www.w3.org/2001/ama/sjsu/d3> <http://www.w3.org/2001/ama/sjsu#name> "GAPE" .
@@ -34,10 +34,10 @@
 <http://www.w3.org/2001/ama/sjsu/service1> <http://www.w3.org/2001/ama/sjsu#type> "service" .
 <http://www.w3.org/2001/ama/sjsu/service1> <http://www.w3.org/2001/ama/sjsu#name> "Parking service" .
 <http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#sjsuId> "s5" .
-<http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#type> "scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#name> "AORN Foundation Academic Scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#studentLevel> "graduate" .
-<http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#school> "nursing" .
+<http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#name> "scholarships" .
+<http://www.w3.org/2001/ama/sjsu/s5> <http://www.w3.org/2001/ama/sjsu#school> <http://www.w3.org/2001/ama/sjsu/g5> .
+<http://www.w3.org/2001/ama/sjsu/g5> <http://www.w3.org/2001/ama/sjsu#sjsuId> "g5" .
+<http://www.w3.org/2001/ama/sjsu/g5> <http://www.w3.org/2001/ama/sjsu#scholarshipname> "AORN Foundation Academic Scholarship" .
 <http://www.w3.org/2001/ama/sjsu/d2> <http://www.w3.org/2001/ama/sjsu#sjsuId> "d2" .
 <http://www.w3.org/2001/ama/sjsu/d2> <http://www.w3.org/2001/ama/sjsu#type> "department" .
 <http://www.w3.org/2001/ama/sjsu/d2> <http://www.w3.org/2001/ama/sjsu#name> "CS" .
@@ -54,10 +54,10 @@
 <http://www.w3.org/2001/ama/sjsu/c2> <http://www.w3.org/2001/ama/sjsu#name> "Software Systems Engineering" .
 <http://www.w3.org/2001/ama/sjsu/c2> <http://www.w3.org/2001/ama/sjsu#number> "202" .
 <http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#sjsuId> "s4" .
-<http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#type> "scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#name> "AANP Scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#studentLevel> "graduate" .
-<http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#school> "nursing" .
+<http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#name> "scholarships" .
+<http://www.w3.org/2001/ama/sjsu/s4> <http://www.w3.org/2001/ama/sjsu#school> <http://www.w3.org/2001/ama/sjsu/g6> .
+<http://www.w3.org/2001/ama/sjsu/g6> <http://www.w3.org/2001/ama/sjsu#sjsuId> "g6" .
+<http://www.w3.org/2001/ama/sjsu/g6> <http://www.w3.org/2001/ama/sjsu#scholarshipname> "AANP Scholarship" .
 <http://www.w3.org/2001/ama/sjsu/d1> <http://www.w3.org/2001/ama/sjsu#sjsuId> "d1" .
 <http://www.w3.org/2001/ama/sjsu/d1> <http://www.w3.org/2001/ama/sjsu#type> "department" .
 <http://www.w3.org/2001/ama/sjsu/d1> <http://www.w3.org/2001/ama/sjsu#name> "CMPE" .
@@ -78,9 +78,10 @@
 <http://www.w3.org/2001/ama/sjsu/s3> <http://www.w3.org/2001/ama/sjsu#name> "Fall 2021" .
 <http://www.w3.org/2001/ama/sjsu/s3> <http://www.w3.org/2001/ama/sjsu#tuitionFees> "Per unit tuition fees is $1200 and deadline to pay the fees is August 10, 2021" .
 <http://www.w3.org/2001/ama/sjsu/s3> <http://www.w3.org/2001/ama/sjsu#sjsuId> "s3" .
-<http://www.w3.org/2001/ama/sjsu/s3> <http://www.w3.org/2001/ama/sjsu#type> "scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s3> <http://www.w3.org/2001/ama/sjsu#name> "Graduate Equity Fellowships" .
-<http://www.w3.org/2001/ama/sjsu/s3> <http://www.w3.org/2001/ama/sjsu#studentLevel> "graduate" .
+<http://www.w3.org/2001/ama/sjsu/s9> <http://www.w3.org/2001/ama/sjsu#name> "scholarships" .
+<http://www.w3.org/2001/ama/sjsu/g1> <http://www.w3.org/2001/ama/sjsu#sjsuId> "g1" .
+<http://www.w3.org/2001/ama/sjsu/g1> <http://www.w3.org/2001/ama/sjsu#scholarshipname> "Graduate Equity Fellowships" .
+<http://www.w3.org/2001/ama/sjsu/s9> <http://www.w3.org/2001/ama/sjsu#studentLevel> <http://www.w3.org/2001/ama/sjsu/g1> .
 <http://www.w3.org/2001/ama/sjsu/d6> <http://www.w3.org/2001/ama/sjsu#sjsuId> "d6" .
 <http://www.w3.org/2001/ama/sjsu/d6> <http://www.w3.org/2001/ama/sjsu#type> "department" .
 <http://www.w3.org/2001/ama/sjsu/d6> <http://www.w3.org/2001/ama/sjsu#applicationFees> "$70" .
@@ -93,9 +94,10 @@
 <http://www.w3.org/2001/ama/sjsu/s2> <http://www.w3.org/2001/ama/sjsu#name> "Summer 2021" .
 <http://www.w3.org/2001/ama/sjsu/s2> <http://www.w3.org/2001/ama/sjsu#tuitionFees> "Per unit tuition fees is $800 and deadline to pay the fees is May 10, 2021" .
 <http://www.w3.org/2001/ama/sjsu/s2> <http://www.w3.org/2001/ama/sjsu#sjsuId> "s2" .
-<http://www.w3.org/2001/ama/sjsu/s2> <http://www.w3.org/2001/ama/sjsu#type> "scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s2> <http://www.w3.org/2001/ama/sjsu#name> "Bertha Kalm Scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s2> <http://www.w3.org/2001/ama/sjsu#studentLevel> "graduate" .
+<http://www.w3.org/2001/ama/sjsu/s8> <http://www.w3.org/2001/ama/sjsu#name> "scholarships" .
+<http://www.w3.org/2001/ama/sjsu/s8> <http://www.w3.org/2001/ama/sjsu#studentLevel> <http://www.w3.org/2001/ama/sjsu/g3> .
+<http://www.w3.org/2001/ama/sjsu/g3> <http://www.w3.org/2001/ama/sjsu#sjsuId> "g3" .
+<http://www.w3.org/2001/ama/sjsu/g3> <http://www.w3.org/2001/ama/sjsu#scholarshipname> "Bertha Kalm Scholarship" .
 <http://www.w3.org/2001/ama/sjsu#criteria> <http://www.w3.org/2001/ama/sjsu#hasAlias> "criteria" .
 <http://www.w3.org/2001/ama/sjsu#criteria> <http://www.w3.org/2001/ama/sjsu#hasAlias> "criterion" .
 <http://www.w3.org/2001/ama/sjsu/d5> <http://www.w3.org/2001/ama/sjsu#contactNumber> "408-283-7500" .
@@ -112,9 +114,10 @@
 <http://www.w3.org/2001/ama/sjsu/s1> <http://www.w3.org/2001/ama/sjsu#name> "Spring 2021" .
 <http://www.w3.org/2001/ama/sjsu/s1> <http://www.w3.org/2001/ama/sjsu#tuitionFees> "Per unit tuition fees is $1200 and deadline to pay the fees is Jan 10, 2021" .
 <http://www.w3.org/2001/ama/sjsu/s1> <http://www.w3.org/2001/ama/sjsu#sjsuId> "s1" .
-<http://www.w3.org/2001/ama/sjsu/s1> <http://www.w3.org/2001/ama/sjsu#type> "scholarship" .
-<http://www.w3.org/2001/ama/sjsu/s1> <http://www.w3.org/2001/ama/sjsu#name> "Graduate Student Virtual Travel Award" .
-<http://www.w3.org/2001/ama/sjsu/s1> <http://www.w3.org/2001/ama/sjsu#studentLevel> "graduate" .
+<http://www.w3.org/2001/ama/sjsu/s10> <http://www.w3.org/2001/ama/sjsu#name> "scholarships" .
+<http://www.w3.org/2001/ama/sjsu/s10> <http://www.w3.org/2001/ama/sjsu#studentLevel> <http://www.w3.org/2001/ama/sjsu/g2> .
+<http://www.w3.org/2001/ama/sjsu/g2> <http://www.w3.org/2001/ama/sjsu#sjsuId> "g2" .
+<http://www.w3.org/2001/ama/sjsu/g2> <http://www.w3.org/2001/ama/sjsu#scholarshipname> "Graduate Student Virtual Travel Award" .
 <http://www.w3.org/2001/ama/sjsu/service3> <http://www.w3.org/2001/ama/sjsu#info> "TOEFL and GRE (ETS Code) is 4687" .
 <http://www.w3.org/2001/ama/sjsu/service3> <http://www.w3.org/2001/ama/sjsu#sjsuId> "service3" .
 <http://www.w3.org/2001/ama/sjsu/service3> <http://www.w3.org/2001/ama/sjsu#type> "service" .
