@@ -3,8 +3,10 @@ import { InputGroup, FormControl,Button, Col, Row,Card,Container,Image,Navbar,Me
 import axios from "axios";
 import AutoCompleteText from "./AutoCompleteText";
 import './AutoCompleteText.css';
-import spartan_logo from "../images/spartan_logo.png"
-import qa_logo from "../images/qa_system_logo.png"
+import spartan_logo from "../images/spartan_logo.png";
+import qa_logo from "../images/qa_system_logo.png";
+import Spinner from "../appEntry/Spinner";
+
 
 class LandingPage extends Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class LandingPage extends Component {
       text:"",
       answer:"",
       suggestions:[],
+      loading:false
     };
     this.onKeyUp = this.onKeyUp.bind(this);
     this.handleSubmit= this.handleSubmit.bind(this);
@@ -23,7 +26,7 @@ class LandingPage extends Component {
 
   handleSearchChange = e => {
     this.setState({
-      question: e.target.value
+      question: e.target.value,
     });
 
   if(this.state.question.length<0) 
@@ -73,6 +76,10 @@ onKeyUp(event) {
 
   handleSubmit = e => {
     // e.preventDefault();
+
+    this.setState({
+      loading:true
+    })
     
     const data = {
       question: this.state.question
@@ -87,11 +94,13 @@ onKeyUp(event) {
       console.log("the bert question:",response.data.question);
       this.setState({
         answer:response.data.answer,
-        text:response.data.question
+        text:response.data.question,
+        loading:false
       })
       }else{
         this.setState({
-          answer:"Did not find the answer for this question. Please try another one!"
+          answer:"Did not find the answer for this question. Please try another one!",
+          loading:false
         })
       }
       })
@@ -107,8 +116,13 @@ onKeyUp(event) {
     let content;
     let displaySuggestions;
     let helpingQuestion;
+    let spinner;
+
     const {suggestions} =  this.state;
 
+    if (this.state.loading) {
+      spinner = <Spinner animation="border" variant="primary" />;
+    }
 
     if(suggestions.length === 0){
         displaySuggestions= null;
@@ -194,6 +208,7 @@ onKeyUp(event) {
                   </div>
                 <br />
                   <div>
+                    {spinner}
                     {content}
                   </div>
               </div>

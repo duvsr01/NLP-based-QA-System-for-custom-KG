@@ -9,22 +9,16 @@ questions =['What is the email of Dan Harkey?'
 ,'How many courses are taught by Dan Harkey?'
 ,'What is the deadline to pay Fall 2021 Tuition Fee?'
 ,'What are the pre-requisites for Masters in Software Engineering at SJSU?'
-,'How to apply for graduation?'
-,'Where is location for CMPE 255 office hours?'
-,'How to request for travel I-20 at SJSU?'
-,'Who is the professor for CMPE-273?'
-,'Where can I find Bursars office?'
-,'What are some of the student clubs for Computer Science students?'
-,'Library Timings?'
-,'Where can I find printers on-campus?'
-,'What are the office hours of a Professor?'
-,'How many min credits are required to enroll in a semester?'
-,'What is minimum of courses one needs to enroll in MS?'
-,'What is the maximum number of courses one can take in a semester?'
-,'What are the steps to apply for SSN?'
-,'Is SSN mandatory to do a job on campus?'
-,'What are prerequisites for GWAR?'
-,'What are the prerequisites of course 255?'
+,"How can I reach the Student Health Center ?"
+,"What is the contact number of admissions office?"
+,"What are scholarships available to graduate students?"
+,"What scholarships are available to grad students under nursing school?"
+,"What is the criteria for an interdisciplinary studies major?"
+,"Whom should I contact for interdisciplinary major?"
+,"How to avail parking services?"
+,"What is the ETS code to send TOEFL/ GRE score?"
+,"Where is the central machine shop located?"
+,"What is the application fees for graduate school?"
 ,"Dan Harkey"
 ,"ISSS Department"
 ,"SJSU"
