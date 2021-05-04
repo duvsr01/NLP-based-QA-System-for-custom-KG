@@ -10,11 +10,15 @@ pip install -r requirements.txt
 
 # To start Bert as a Service:
 
-1. pip install tensorflow=1.15
+1. pip install tensorflow==1.15
 2. pip install -U bert-serving-server bert-serving-client
 3. Download a Pre-trained BERT Model : https://bert-as-service.readthedocs.io/en/latest/section/get-start.html. eg : BERT-Base, Uncased
 4. To start BERT as a service, run the following command in the terminal :
    bert-serving-start -model_dir uncased_L-12_H-768_A-12/ -num_worker=1&
+
+Note: Incase if the tensorflow version does not match, use this: python -m pip install --upgrade https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-1.12.0-py3-none-any.whl
+
+Note: Don't install tensorflow>1.15
 
 # To run flask server:
 

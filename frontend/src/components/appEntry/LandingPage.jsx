@@ -11,6 +11,7 @@ class LandingPage extends Component {
     super(props);
     this.state = {
       question: "",
+      text:"",
       answer:"",
       suggestions:[],
     };
@@ -83,6 +84,7 @@ onKeyUp(event) {
       console.log("Status Code : ", response.status);
       console.log("Answer: "+response.data);
       if(Object.keys(response.data).length !== 0){
+      console.log("the bert question:",response.data.question);
       this.setState({
         answer:response.data
       })

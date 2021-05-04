@@ -1,4 +1,5 @@
 from search_suggestion import SearchSuggestion
+# from app import rich_entity
 
 suggestions = SearchSuggestion()
 
@@ -37,6 +38,8 @@ questions =['What is the email of Dan Harkey?'
 ,"CMPE 295A"
 ,"CMPE 295B"
 ]
+
+# print(rich_entity)
 
 
 for i in range(len(questions)):
