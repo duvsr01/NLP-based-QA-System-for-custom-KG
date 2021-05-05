@@ -12,7 +12,7 @@ import re
 import pickle
 from googletrans import Translator
 from suggestions import removePunctuations, chooseWords
-from searchSuggestions import suggestions, showSuggestions
+from searchSuggestions import suggestions
 
 from bertML import preComputedSentenceEmbeddings, bertMatchinQuestion
 import os, sys
@@ -49,7 +49,7 @@ def get_rich_entity():
     if rich_entity:
         return rich_entity
 
-    print("Retrieveing rick entities set")
+    print("Retrieveing rich entities set")
     result_dict = {}
     json_arr = []
     query = """
@@ -586,12 +586,34 @@ def searchSuggestion_process():
             return ('', 204)
 
         result = suggestions.search(question.lower(), max_suggestions=10)
-        displaySuggestions = showSuggestions(result)
 
-        # for obj in displaySuggestions:
-        #     print(obj.suggestion)
-        #     print(obj.tag)
-    
+        # Helper function to combine the suggestions from suggestions cache and the rich entity set
+        def showSuggestions(result):
+            class Helper(object):
+                def __init__(self, suggestion, tag):
+                    self.suggestion = suggestion
+                    self.tag = tag
+
+            displaySuggestions = []
+
+            # adding suggestions from the rich-entity set
+            for entity in rich_entity:
+                if(entity['name'].lower().startswith(question.lower())):
+                    suggestion = entity['name']
+                    tag= entity['tag']
+                    displaySuggestions.append(Helper(suggestion,tag))
+
+            # this loop helps in formatting the result
+            # for suggestions which are not in rich-entity set
+            # ex: questions like "what is the email of Dan Harkey?", they dont have entity tag
+            for i in range(len(result)):
+                suggestion = result[i]
+                tag = ""
+                displaySuggestions.append(Helper(suggestion,tag))
+
+            return displaySuggestions
+
+        displaySuggestions = showSuggestions(result)
         return json.dumps(displaySuggestions,default=lambda o: o.__dict__)
 
     except Exception as e:
