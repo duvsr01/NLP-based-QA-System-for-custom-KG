@@ -200,10 +200,11 @@ def process():
 def fail_safe(question):
     entity_set = []
     langCode = "en"
+    print("fail_safe question", question)
     try:
-        answer = quepy_main(question)
-        print("Quepy Regex Result:",answer)
-        if answer is None:
+        output = quepy_main(question)
+        print("Quepy Regex Result:",output)
+        if output is None:
             new_question = bertMatchinQuestion(question)
             output = process(new_question, 3)
             if output:
