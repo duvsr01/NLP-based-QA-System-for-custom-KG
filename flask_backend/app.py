@@ -215,8 +215,17 @@ def fail_safe(question):
                 print(result_dict)
                 return jsonify(result_dict)
             else:
-                result_dict["answer"] = output
-                return jsonify(result_dict)
+                output = quepy_main(new_question)
+                if output:
+                    print("*** output ****")
+                    print(output)
+                    result_dict["answer"] = output
+                    result_dict["question"] = new_question
+                    print(result_dict)
+                    return jsonify(result_dict)
+                else:
+                    result_dict["answer"] = output
+                    return jsonify(result_dict)
         else:
             result_dict["answer"] = output
             return jsonify(result_dict)
