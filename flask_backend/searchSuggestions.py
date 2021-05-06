@@ -19,18 +19,6 @@ questions =['What is the email of Dan Harkey?'
 ,"What is the ETS code to send TOEFL/ GRE score?"
 ,"Where is the central machine shop located?"
 ,"What is the application fees for graduate school?"
-,"Dan Harkey"
-,"ISSS Department"
-,"SJSU"
-,"San Jose State University"
-,"Software Engineering"
-,"Computer Engineering"
-,"Vinodh Gopinath"
-,"CMPE 255"
-,"CMPE 273"
-,"CMPE 281"
-,"CMPE 295A"
-,"CMPE 295B"
 ]
 
 # print(rich_entity)
@@ -53,24 +41,24 @@ suggestions.batch_insert(questions)
 # print(result)
 
 
-def showSuggestions(result):
+# def showSuggestions(result):
 
-    class Helper(object):
-        def __init__(self, suggestion, tag):
-            self.suggestion = suggestion
-            self.tag = tag
+#     class Helper(object):
+#         def __init__(self, suggestion, tag):
+#             self.suggestion = suggestion
+#             self.tag = tag
 
-    displaySuggestions = []
-    for i in range(len(result)):
-        suggestion = result[i]
-        tag = ""
-        if(suggestion in entities.keys()):
-            # print(entities[suggestion])
-            tag = entities[suggestion]
+#     displaySuggestions = []
+#     for i in range(len(result)):
+#         suggestion = result[i]
+#         tag = ""
+#         if(suggestion in entities.keys()):
+#             # print(entities[suggestion])
+#             tag = entities[suggestion]
         
-        displaySuggestions.append(Helper(suggestion,tag))
+#         displaySuggestions.append(Helper(suggestion,tag))
 
-    return displaySuggestions
+#     return displaySuggestions
 
 # sug = showSuggestions(result)
 
