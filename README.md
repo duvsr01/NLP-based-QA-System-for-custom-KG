@@ -13,3 +13,5 @@ Our QA system has 4 components and steps to build each are listed below -
 3. [Rules backend](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/tree/main/backend) uses NLP techniques and rules to answer questions
 4. [Custom KG](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/tree/main/ama-custom-kg) allows users to create a custom KG
 
+<h3>Architecture</h3>
+![](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/blob/main/klien/images/ama-archi.png)
