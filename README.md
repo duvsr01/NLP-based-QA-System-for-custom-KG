@@ -7,6 +7,7 @@ In this project, we propose a Question Answering system that can answer factoid 
 
 <h3>Steps to build the application</h3>
 Our QA system has 4 components and steps to build each are listed below -
+
 1. [UI](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/tree/main/frontend) that provides a user friendly experience to ask questions
 2. [Flask backend](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/tree/main/flask_backend) that uses entity and relationship recognition to answer question
 3. [Rules backend](https://github.com/duvsr01/NLP-based-QA-System-for-custom-KG/tree/main/backend) uses NLP techniques and rules to answer questions
